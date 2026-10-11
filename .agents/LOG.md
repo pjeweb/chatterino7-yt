@@ -16,3 +16,20 @@ Newest at the bottom. One entry per supervisor check-in or decision.
   updater only; no analytics/heartbeats; Twitch via Helix only.
 - Process: supervisor + up to 3 Claude workers in worktrees; `codex exec review`
   as an independent reviewer before merges.
+- First codex review (privacy-defaults commit) caught a real bug: the sub-age gate
+  also disabled the Helix follow-age lookup. Fixed by gating inside
+  `IvrApi::getSubage` instead, which also leaves `UserInfoPopup.cpp` identical to
+  upstream. Codex review is worth running on every merge.
+- T00 verified locally: 713/713 tests pass in the dev container
+  (`QT_QPA_PLATFORM=minimal`, since the static Qt has no offscreen plugin).
+  Pushed `chatterino7`; GitHub CI (Build, Ubuntu/Arch tests, CodeQL, zizmor,
+  Scorecard, formatting, lint) triggered.
+- CI on `chatterino7`: Lint (Prettier) failed on the new docs; formatted with
+  `prettier@3.8.1` and added the step to the worker rules. NETWORK.md now marks
+  the implemented privacy defaults as done.
+- T02 → PR #1. Codex found a P2 gap (lines starting with `/*` or `*` skipped
+  even when they contain code); sent back to the worker. T03 started.
+- User asked to pause the expensive builds. Disabled the heavy upstream
+  workflows via `gh workflow disable` (no file changes, trivially reversible)
+  and cancelled running builds. The local docker check is now the merge gate;
+  T13 tracks re-enabling before the first release.
