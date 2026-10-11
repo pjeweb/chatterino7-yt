@@ -71,10 +71,15 @@ for this session; the tables record all remaining findings below.
 - `npx --yes prettier@3.8.1 --check` on changed YAML and both Markdown files:
   passed. `git diff --check`: passed.
 - `wc -l docs/fork/CI.md`: 74 (under the 80-line limit).
+- Merged current `chatterino7` (`a4a831bf2`) into this isolated branch as
+  requested; merge commit `dd0434392` inherits formatted coordination docs.
+  Post-merge online audit still has 20 upstream findings and zero fork
+  findings. Formatting all workflow YAML passes.
+- `git merge-tree --write-tree HEAD upstream/chatterino7`: clean, exit 0.
 - Read-only `gh api repos/pjeweb/chatterino7-yt/actions/workflows`: confirmed
   the ten paused workflows listed below. Repository token defaults are
   already `read`; the YAML now makes that restriction portable.
-- No C++ changed, so no build was necessary. No workflow was enabled,
+- No T01 C++ changed, so no task build was necessary. No workflow was enabled,
   dispatched, pushed or otherwise changed on GitHub.
 
 ## Remaining upstream findings
