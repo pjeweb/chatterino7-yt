@@ -1,12 +1,14 @@
 #!/usr/bin/env bash
 
-# Bundle relevant qt & system dependencies into the ./chatterino.app folder
+# Bundle relevant qt & system dependencies into the ./chatterino7-yt.app folder
 
 set -eo pipefail
 
-if [ -d bin/chatterino.app ] && [ ! -d chatterino.app ]; then
-    >&2 echo "Moving bin/chatterino.app down one directory"
-    mv bin/chatterino.app chatterino.app
+APP_BUNDLE="chatterino7-yt.app"
+
+if [ -d "bin/${APP_BUNDLE}" ] && [ ! -d "${APP_BUNDLE}" ]; then
+    >&2 echo "Moving bin/${APP_BUNDLE} down one directory"
+    mv "bin/${APP_BUNDLE}" "${APP_BUNDLE}"
 fi
 
 if [ -n "$Qt6_DIR" ]; then
@@ -38,14 +40,14 @@ if [ -n "$MACOS_CODESIGN_CERTIFICATE" ]; then
     codesign -s "$MACOS_CODESIGN_CERTIFICATE" --force kimg/kimg_avif.dylib
 fi
 
-mkdir -p chatterino.app/Contents/Frameworks
-mkdir -p chatterino.app/Contents/PlugIns/imageformats
-cp kimg/libKF6Archive.6.dylib chatterino.app/Contents/Frameworks/
-cp kimg/kimg_avif.dylib chatterino.app/Contents/PlugIns/imageformats/
+mkdir -p "${APP_BUNDLE}/Contents/Frameworks"
+mkdir -p "${APP_BUNDLE}/Contents/PlugIns/imageformats"
+cp kimg/libKF6Archive.6.dylib "${APP_BUNDLE}/Contents/Frameworks/"
+cp kimg/kimg_avif.dylib "${APP_BUNDLE}/Contents/PlugIns/imageformats/"
 
-macdeployqt chatterino.app "${_macdeployqt_args[@]}" -verbose=1
+macdeployqt "${APP_BUNDLE}" "${_macdeployqt_args[@]}" -verbose=1
 
 if [ -n "$MACOS_CODESIGN_CERTIFICATE" ]; then
-    # Validate that chatterino.app was codesigned correctly
-    codesign -v chatterino.app
+    # Validate that the app bundle was codesigned correctly
+    codesign -v "${APP_BUNDLE}"
 fi

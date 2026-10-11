@@ -4,6 +4,8 @@
 
 #include "common/Version.hpp"
 
+#include "common/ForkIdentity.hpp"
+
 #include <QFileInfo>
 #include <QStringBuilder>
 
@@ -18,7 +20,7 @@ Version::Version()
     , dateOfBuild_(QStringLiteral(CHATTERINO_CMAKE_GEN_DATE))
     , isNightly_(CHATTERINO_NIGHTLY_BUILD == 1)
 {
-    this->fullVersion_ = "Chatterino 7TV ";
+    this->fullVersion_ = QString(QLatin1String(fork::DISPLAY_NAME)) + u' ';
     if (this->isNightly())
     {
         this->fullVersion_ += "Nightly ";
@@ -41,8 +43,8 @@ Version::Version()
     this->generateExtraString();
 
 #ifdef Q_OS_WIN
-    // keep in sync with .CI/chatterino-installer.iss
-    this->appUserModelID_ = L"SevenTV.Chatterino7TV";
+    // keep in sync with .CI/chatterino-installer.iss and ForkIdentity.hpp
+    this->appUserModelID_ = fork::APP_USER_MODEL_ID;
 #endif
 }
 

@@ -1,4 +1,5 @@
 [Flatpak Ref]
+# Upstream Flathub nightly ref (not published for chatterino7-yt yet).
 Name=com.chatterino.chatterino
 Branch=beta
 Title=com.chatterino.chatterino from flathub

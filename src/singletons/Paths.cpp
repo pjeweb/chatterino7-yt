@@ -99,12 +99,16 @@ void Paths::initRootDirectory(const Args &args, const Modes &modes)
                                      path.toStdString() + "\"");
         }
 
-// create directory Chatterino2 instead of Chatterino on windows because the
-// ladder one is takes by Chatterino 1 already
+// Historical Windows directory for applicationName "chatterino" (Chatterino2 /
+// chatterino7). Distinct fork app names keep Qt's AppDataLocation as-is so
+// settings are not silently shared. --portable / --portable-dir still win above.
 #ifdef Q_OS_WIN
-        path.replace("chatterino", "Chatterino");
-
-        path += "2";
+        if (QCoreApplication::applicationName().compare(
+                QLatin1String("chatterino"), Qt::CaseInsensitive) == 0)
+        {
+            path.replace("chatterino", "Chatterino");
+            path += "2";
+        }
 #endif
         return path;
     }();

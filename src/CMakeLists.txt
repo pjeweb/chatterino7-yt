@@ -28,6 +28,7 @@ set(SOURCE_FILES
         common/ChatterSet.hpp
         common/Env.cpp
         common/Env.hpp
+        common/ForkIdentity.hpp
         common/LastMessageLineStyle.hpp
         common/LinkParser.cpp
         common/LinkParser.hpp
@@ -1187,13 +1188,14 @@ if (BUILD_APP)
                 COMPONENT ${PROJECT_NAME}
                 )
 
-        install(FILES ${CMAKE_SOURCE_DIR}/resources/com.chatterino.chatterino.desktop
+        # Keep desktop/icon IDs in sync with common/ForkIdentity.hpp
+        install(FILES ${CMAKE_SOURCE_DIR}/resources/com.chatterino7yt.chatterino7yt.desktop
                 DESTINATION share/applications
                 COMPONENT ${PROJECT_NAME}
                 )
 
         install(FILES ${CMAKE_SOURCE_DIR}/resources/icon.png
-                RENAME com.chatterino.chatterino.png
+                RENAME com.chatterino7yt.chatterino7yt.png
                 DESTINATION share/icons/hicolor/256x256/apps
                 COMPONENT ${PROJECT_NAME}
                 )
@@ -1288,13 +1290,19 @@ if (MSVC)
     target_compile_options(${LIBRARY_PROJECT} PUBLIC /EHsc /bigobj /utf-8)
 endif ()
 
+if (BUILD_APP)
+    # Keep in sync with common/ForkIdentity.hpp (side-by-side with chatterino).
+    set_target_properties(${EXECUTABLE_PROJECT} PROPERTIES
+        OUTPUT_NAME "chatterino7-yt")
+endif ()
+
 if (APPLE AND BUILD_APP)
     set_target_properties(${EXECUTABLE_PROJECT} PROPERTIES MACOSX_BUNDLE TRUE)
     set_target_properties(${EXECUTABLE_PROJECT}
         PROPERTIES
-        MACOSX_BUNDLE_BUNDLE_NAME "Chatterino 7TV"
-        # Keep this for backwards compatibility
-        MACOSX_BUNDLE_GUI_IDENTIFIER "app.7tv.chatterino7"
+        MACOSX_BUNDLE_BUNDLE_NAME "chatterino7-yt"
+        # Distinct from chatterino7's app.7tv.chatterino7
+        MACOSX_BUNDLE_GUI_IDENTIFIER "app.chatterino7yt.chatterino7yt"
         MACOSX_BUNDLE_LONG_VERSION_STRING "${PROJECT_VERSION}"
         MACOSX_BUNDLE_SHORT_VERSION_STRING "${PROJECT_VERSION}"
         MACOSX_BUNDLE_BUNDLE_VERSION "${PROJECT_VERSION}"

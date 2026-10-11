@@ -146,8 +146,9 @@ jobs:
         if: matrix.build-appimage
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: Chatterino-x86_64-Qt-6.7.2.AppImage
-          path: build/Chatterino_7TV-x86_64.AppImage
+          # appimagetool names the file from desktop Name=chatterino7-yt
+          name: chatterino7-yt-x86_64-Qt-6.7.2.AppImage
+          path: build/chatterino7-yt-x86_64.AppImage
 
       - name: Package - .deb (Ubuntu)
         if: matrix.build-deb
@@ -177,7 +178,7 @@ jobs:
       - uses: flatpak/flatpak-github-actions/flatpak-builder@79327416609af08178ad73b352877e51450790b3 # v6.8
         with:
           bundle: chatterino.flatpak
-          manifest-path: .CI/com.chatterino.chatterino.yml
+          manifest-path: .CI/com.chatterino7yt.chatterino7yt.yml
           cache-key: flatpak-builder-${{ github.sha }}
 
   # MARK: Main build
@@ -349,14 +350,15 @@ jobs:
           ninja chatterino-crash-handler
           mkdir Chatterino2/crashpad
           cp bin/crashpad/crashpad-handler.exe Chatterino2/crashpad/crashpad-handler.exe
-          7z a bin/chatterino-${{ env.C2_ARCH }}-Qt-${{ matrix.qt-version }}.pdb.7z bin/chatterino.pdb
+          # PDB basename follows OUTPUT_NAME (chatterino7-yt), not the CMake target.
+          7z a bin/chatterino7-yt-${{ env.C2_ARCH }}-Qt-${{ matrix.qt-version }}.pdb.7z bin/chatterino7-yt.pdb
 
       - name: Prepare build dir (windows)
         if: startsWith(matrix.os, 'windows')
         working-directory: build
         run: |
-          windeployqt bin/chatterino.exe --release --no-compiler-runtime --no-translations --no-opengl-sw --dir Chatterino2/ --force-openssl
-          cp bin/chatterino.exe Chatterino2/
+          windeployqt bin/chatterino7-yt.exe --release --no-compiler-runtime --no-translations --no-opengl-sw --dir Chatterino2/ --force-openssl
+          cp bin/chatterino7-yt.exe Chatterino2/
           ..\.CI\deploy-crt.ps1 Chatterino2
 
       - name: Package (windows)
@@ -376,8 +378,8 @@ jobs:
         if: startsWith(matrix.os, 'windows') && !matrix.skip-artifact
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: chatterino-windows-${{ env.C2_ARCH }}-Qt-${{ matrix.qt-version }}-symbols.pdb.7z
-          path: build/bin/chatterino-${{ env.C2_ARCH }}-Qt-${{ matrix.qt-version }}.pdb.7z
+          name: chatterino7-yt-windows-${{ env.C2_ARCH }}-Qt-${{ matrix.qt-version }}-symbols.pdb.7z
+          path: build/bin/chatterino7-yt-${{ env.C2_ARCH }}-Qt-${{ matrix.qt-version }}.pdb.7z
 
       # MARK: macOS
       - name: Install dependencies (MacOS)
@@ -446,13 +448,13 @@ jobs:
 
           ./../.CI/MacDeploy.sh
 
-          ls -la chatterino.app/Contents/Frameworks
+          ls -la chatterino7-yt.app/Contents/Frameworks
 
           # Fix the library IDs to match their new location
-          # install_name_tool -id @executable_path/../Frameworks/libssl.3.dylib chatterino.app/Contents/Frameworks/libssl.3.dylib
-          # install_name_tool -id @executable_path/../Frameworks/libcrypto.3.dylib chatterino.app/Contents/Frameworks/libcrypto.3.dylib
+          # install_name_tool -id @executable_path/../Frameworks/libssl.3.dylib chatterino7-yt.app/Contents/Frameworks/libssl.3.dylib
+          # install_name_tool -id @executable_path/../Frameworks/libcrypto.3.dylib chatterino7-yt.app/Contents/Frameworks/libcrypto.3.dylib
 
-          otool -L chatterino.app/Contents/Frameworks/libssl.3.dylib
+          otool -L chatterino7-yt.app/Contents/Frameworks/libssl.3.dylib
           # Fix the search path for libcrypto in libssl
 
           ./../.CI/CreateDMG.sh
