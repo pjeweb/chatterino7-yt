@@ -5,8 +5,8 @@ set -e
 # Print all commands as they are run
 set -x
 
-if [ ! -f ./bin/chatterino ] || [ ! -x ./bin/chatterino ]; then
-    echo "ERROR: No chatterino binary file found. This script must be run in the build folder, and chatterino must be built first."
+if [ ! -f ./bin/chatterino7-yt ] || [ ! -x ./bin/chatterino7-yt ]; then
+    echo "ERROR: No chatterino7-yt binary file found. This script must be run in the build folder, and chatterino7-yt must be built first."
     exit 1
 fi
 
@@ -37,15 +37,16 @@ script_dir=$(dirname "$script_path")
 chatterino_dir=$(dirname "$script_dir")
 
 
-echo "Running LDD on chatterino binary:"
-ldd ./bin/chatterino
+echo "Running LDD on chatterino7-yt binary:"
+ldd ./bin/chatterino7-yt
 echo ""
 
 echo "Running make install in the appdir"
 make INSTALL_ROOT=appdir -j"$(nproc)" install ; find appdir/
 echo ""
 
-cp "$chatterino_dir"/resources/icon.png ./appdir/chatterino.png
+# Match Icon=com.chatterino7yt.chatterino7yt in the desktop file (and CMake install rename).
+cp "$chatterino_dir"/resources/icon.png ./appdir/com.chatterino7yt.chatterino7yt.png
 
 linuxdeployqt_path="linuxdeployqt-x86_64.AppImage"
 linuxdeployqt_url="https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
@@ -109,7 +110,7 @@ for location in "${possible_locations[@]}"; do
 done
 
 cd "$here/usr"
-exec "$here/usr/bin/chatterino" "$@"' > appdir/AppRun
+exec "$here/usr/bin/chatterino7-yt" "$@"' > appdir/AppRun
 chmod a+x appdir/AppRun
 
 echo "New AppRun:"

@@ -41,8 +41,8 @@ esac
 echo "Building Ubuntu .deb file on '$ubuntu_release'"
 echo "Dependencies: $dependencies"
 
-if [ ! -f ./bin/chatterino ] || [ ! -x ./bin/chatterino ]; then
-    echo "ERROR: No chatterino binary file found. This script must be run in the build folder, and chatterino must be built first."
+if [ ! -f ./bin/chatterino7-yt ] || [ ! -x ./bin/chatterino7-yt ]; then
+    echo "ERROR: No chatterino7-yt binary file found. This script must be run in the build folder, and chatterino7-yt must be built first."
     exit 1
 fi
 
@@ -59,16 +59,17 @@ rm -vrf "$packaging_dir"
 mkdir -p "$packaging_dir/DEBIAN"
 
 echo "Making control file"
+# Distinct Package name so this .deb can install beside chatterino/chatterino7.
 cat >> "$packaging_dir/DEBIAN/control" << EOF
-Package: chatterino
+Package: chatterino7-yt
 Version: $chatterino_version
 Architecture: amd64
 Maintainer: Mm2PL <mm2pl@kotmisia.pl>
 Depends: $dependencies
 Section: net
 Priority: optional
-Homepage: https://github.com/Chatterino/chatterino2
-Description: Ubuntu package built for $ubuntu_release
+Homepage: https://github.com/pjeweb/chatterino7-yt
+Description: chatterino7-yt Ubuntu package built for $ubuntu_release
 EOF
 cat "$packaging_dir/DEBIAN/control"
 breakline

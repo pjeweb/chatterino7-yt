@@ -81,19 +81,28 @@ upstream’s Flathub app (comment only).
 ## Platform limitations
 
 - **Linux:** exercised via docker check (path tests + full suite). Desktop file
-  / notifications not launched in a real session here.
+  / notifications not launched in a real session here. AppImage/deb packaging
+  scripts were identity-corrected in the T08r packaging review (binary gates,
+  AppRun, icon, deb `Package`); full linuxdeployqt/dpkg packaging was **not**
+  executed in that review.
 - **macOS / Windows:** identity strings and installer/CMake bundle properties
   inspected and edited only; **not executed** on those OSes. Windows
   `Chatterino2` gate is compile-time `#ifdef Q_OS_WIN` and covered by review,
-  not by the Linux test binary.
-- Paused `build.yml` still stages into a `Chatterino2/` folder name and PDB
-  artifact names may still follow the CMake target `chatterino`; binary copy
-  uses `chatterino7-yt.exe`. Revisit with T13 when heavy CI is re-enabled.
+  not by the Linux test binary. Packaging review aligned macOS
+  `chatterino7-yt.app` paths and Windows PDB input with `OUTPUT_NAME`; those
+  workflows were still not run here.
+- Windows CI still stages deploy/installer inputs under a `Chatterino2/` folder
+  name (shared with `.CI/chatterino-installer.iss` / portable scripts). That is
+  an internal staging directory, not AppData. Optional rename left for later.
+- Heavy `build.yml` / sibling build-test workflows remain paused via
+  `gh workflow disable` (workflow_dispatch retained in YAML; not re-enabled).
 - Browser extension still expects the upstream native-messaging host name until
   a fork-aware extension exists; the fork no longer overwrites upstream’s host.
 
 ## Remaining
 
-- Supervisor: push branch, open draft PR, REVIEW.md + codex review.
+- Supervisor: publish/review/merge the packaging-review branch (original T08 +
+  T08r corrections).
 - Optional later: dedicated icons; migrate helper if someone wants to copy
-  settings from Chatterino2; finish Windows CI packaging folder/PDB names.
+  settings from Chatterino2; rename Windows staging folder off `Chatterino2/`.
+- See `.agents/reports/night-T08r.md` for packaging-review fixes and evidence.
