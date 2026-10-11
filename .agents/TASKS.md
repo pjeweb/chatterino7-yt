@@ -15,7 +15,7 @@ Only the supervisor edits this file. Task specs are the contract for workers.
 | T07 | Release workflow: provenance, SBOM, checksums           | todo   | no     | T01             |                        |
 | T08 | Coexistence: app name, settings dir, app ID             | active | yes    | T03             | night/T08-coexistence  |
 | T09 | YouTube implementation (slices from T04)                | todo   | yes    | T04             |                        |
-| T10 | Translation design doc                                  | review | no     | T00             | PR #6                  |
+| T10 | Translation design doc                                  | merged | no     | T00             | PR #6                  |
 | T11 | Updater design doc (Sparkle/WinSparkle/Flathub)         | todo   | no     | T07             |                        |
 | T12 | First-run network consent screen                        | todo   | yes    | T03             |                        |
 | T13 | Re-enable full CI matrix and get it green               | todo   | no     | most of T01–T12 |                        |

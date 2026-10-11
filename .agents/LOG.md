@@ -59,3 +59,8 @@ Newest at the bottom. One entry per supervisor check-in or decision.
   Only the designated night supervisor integrates until 08:00 Europe/Berlin.
   T06 and T10 are active; Cursor T08, Codex T09a and post-renewal Claude T07 queued.
   Heavy CI remains paused; new sanitizer workflow will be manual-only.
+- Detached user service launched Cursor T08 with a real saved session. The
+  independent supervisor lane passed a read-only launch smoke check, including
+  board/controller access and current-thread T3 PR registration. Foreground
+  parent retained integration while native T06 finishes. T10 design merged via
+  PR #6 after correcting the independent review’s DeepL Authorization wording.

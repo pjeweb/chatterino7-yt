@@ -40,8 +40,8 @@ is the previous pass’s historical record, superseded by this ownership notice.
 | Task | Provider | Status / checkout                                                      |
 | ---- | -------- | ---------------------------------------------------------------------- |
 | T06  | Codex    | active, `c7yt-night/T06`; local sanitizer proof + manual-only workflow |
-| T10  | Codex    | active, `c7yt-night/T10`; translation design                           |
-| T08  | Cursor   | queued, `c7yt-night/T08`; settings/app coexistence                     |
+| T10  | Codex    | merged PR #6; translation design only                                  |
+| T08  | Cursor   | active under controller; c7yt-night/T08 coexistence                    |
 | T09a | Codex    | queued, `c7yt-night/T09a`; offline YouTube models/parsers              |
 | T07  | Claude   | queued after renewal, `c7yt-night/T07`; provenance/release workflow    |
 
