@@ -9,15 +9,15 @@ PR, merge, other checkouts, or C++ builds.
 
 ## Findings corrected
 
-| Consumer                         | Broken assumption                         | Fix                                                                                          |
-| -------------------------------- | ----------------------------------------- | -------------------------------------------------------------------------------------------- |
-| `.CI/CreateAppImage.sh`          | `./bin/chatterino`, AppRun, `chatterino.png` | Binary/ldd/AppRun → `chatterino7-yt`; icon → `com.chatterino7yt.chatterino7yt.png`         |
-| `.CI/CreateUbuntuDeb.sh`         | `./bin/chatterino`, `Package: chatterino` | Binary check + `Package: chatterino7-yt` (coexist with chatterino/chatterino7); fork Homepage |
-| `.CI/MacDeploy.sh`               | `chatterino.app`                          | `chatterino7-yt.app` (matches CMake `OUTPUT_NAME` + bundle)                                  |
-| `.CI/CreateDMG.sh`               | `chatterino.app`, volume `Chatterino2`    | Bundle + DMG volume name `chatterino7-yt`                                                    |
-| `.CI/dmg-settings.py`            | none (uses `-D app=`)                     | Unchanged                                                                                    |
-| `.github/workflows/build.yml`    | macOS `chatterino.app`, PDB `chatterino.pdb`, AppImage `Chatterino_7TV-*` | Bundle paths, `chatterino7-yt.pdb`, AppImage path from desktop `Name=`        |
-| `.github/workflows/create-installer.yml` | Artifact glob missed `chatterino7-yt-*` | Pattern `{[Cc]hatterino-[^wW]*,chatterino7-yt-*}`                                     |
+| Consumer                                 | Broken assumption                                                         | Fix                                                                                           |
+| ---------------------------------------- | ------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| `.CI/CreateAppImage.sh`                  | `./bin/chatterino`, AppRun, `chatterino.png`                              | Binary/ldd/AppRun → `chatterino7-yt`; icon → `com.chatterino7yt.chatterino7yt.png`            |
+| `.CI/CreateUbuntuDeb.sh`                 | `./bin/chatterino`, `Package: chatterino`                                 | Binary check + `Package: chatterino7-yt` (coexist with chatterino/chatterino7); fork Homepage |
+| `.CI/MacDeploy.sh`                       | `chatterino.app`                                                          | `chatterino7-yt.app` (matches CMake `OUTPUT_NAME` + bundle)                                   |
+| `.CI/CreateDMG.sh`                       | `chatterino.app`, volume `Chatterino2`                                    | Bundle + DMG volume name `chatterino7-yt`                                                     |
+| `.CI/dmg-settings.py`                    | none (uses `-D app=`)                                                     | Unchanged                                                                                     |
+| `.github/workflows/build.yml`            | macOS `chatterino.app`, PDB `chatterino.pdb`, AppImage `Chatterino_7TV-*` | Bundle paths, `chatterino7-yt.pdb`, AppImage path from desktop `Name=`                        |
+| `.github/workflows/create-installer.yml` | Artifact glob missed `chatterino7-yt-*`                                   | Pattern `{[Cc]hatterino-[^wW]*,chatterino7-yt-*}`                                             |
 
 Preserved on purpose: upstream Docker/container image names
 (`ghcr.io/chatterino/chatterino2-build-*`), Flatpak module name `chatterino`,
