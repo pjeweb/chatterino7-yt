@@ -1520,6 +1520,13 @@ void GeneralPage::initLayout(GeneralPageView &layout)
             R"(Pronouns are retrieved from <a href="https://pr.alejo.io">pr.alejo.io</a> when a user card is opened.)")
         ->addTo(layout);
 
+    SettingWidget::checkbox("Show user's sub age in user card",
+                            s.showSubageInUserCard)
+        ->setDescription(
+            R"(Sub age is retrieved from <a href="https://api.ivr.fi">api.ivr.fi</a> when a user card is opened.)")
+        ->addKeywords({"subage", "ivr"})
+        ->addTo(layout);
+
     SettingWidget::checkbox("Show stream title in live message",
                             s.showTitleInLiveMessage)
         ->setTooltip("The title in the message will be the title the streamer "

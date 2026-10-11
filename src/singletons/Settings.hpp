@@ -515,7 +515,8 @@ public:
     BoolSetting enableBTTVGlobalEmotes = {"/emotes/bttv/global", true};
     BoolSetting enableBTTVChannelEmotes = {"/emotes/bttv/channel", true};
     BoolSetting enableBTTVLiveUpdates = {"/emotes/bttv/liveupdates", true};
-    BoolSetting sendBTTVActivity = {"/emotes/bttv/sendActivity", true};
+    // chatterino7-yt: off by default, this tells BTTV which channel you are in
+    BoolSetting sendBTTVActivity = {"/emotes/bttv/sendActivity", false};
     BoolSetting enableFFZGlobalEmotes = {"/emotes/ffz/global", true};
     BoolSetting enableFFZChannelEmotes = {"/emotes/ffz/channel", true};
     BoolSetting enableSevenTVGlobalEmotes = {"/emotes/seventv/global", true};
@@ -523,7 +524,8 @@ public:
     BoolSetting enableSevenTVPersonalEmotes = {"/emotes/seventv/personal",
                                                true};
     BoolSetting enableSevenTVEventAPI = {"/emotes/seventv/eventapi", true};
-    BoolSetting sendSevenTVActivity = {"/emotes/seventv/sendActivity", true};
+    // chatterino7-yt: off by default, this tells 7TV which channel you are in
+    BoolSetting sendSevenTVActivity = {"/emotes/seventv/sendActivity", false};
 
     BoolSetting allowAvifImages = {"/emotes/allowAvif", true};
 
@@ -816,8 +818,9 @@ public:
     QStringSetting currentVersion = {"/misc/currentVersion", ""};
     IntSetting overlayKnowledgeLevel = {"/misc/overlayKnowledgeLevel", 0};
 
+    // chatterino7-yt: off by default, this sends joined channels to a third party
     BoolSetting loadTwitchMessageHistoryOnConnect = {
-        "/misc/twitch/loadMessageHistoryOnConnect", true};
+        "/misc/twitch/loadMessageHistoryOnConnect", false};
     QStringSetting messageHistoryUrl = {"/misc/twitch/messageHistoryUrl", ""};
     IntSetting twitchMessageHistoryLimit = {
         "/misc/twitch/messageHistoryLimit",
@@ -860,6 +863,8 @@ public:
                                                true};
     BoolSetting lockNotebookLayout = {"/misc/lockNotebookLayout", false};
     BoolSetting showPronouns = {"/misc/showPronouns", false};
+    // chatterino7-yt: sub age is fetched from api.ivr.fi, so it's opt-in
+    BoolSetting showSubageInUserCard = {"/misc/showSubageInUserCard", false};
     BoolSetting showTitleInLiveMessage = {
         "/extraChannels/live/showTitle",
         false,

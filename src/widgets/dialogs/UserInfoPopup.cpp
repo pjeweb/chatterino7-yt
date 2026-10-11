@@ -1149,7 +1149,8 @@ void UserInfoPopup::updateUserData()
 
         auto type = this->underlyingChannel_->getType();
 
-        if (type == Channel::Type::Twitch)
+        if (type == Channel::Type::Twitch &&
+            getSettings()->showSubageInUserCard)
         {
             // get subage
             getIvr()->getSubage(
