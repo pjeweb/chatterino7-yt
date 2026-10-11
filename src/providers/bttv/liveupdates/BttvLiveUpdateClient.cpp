@@ -8,6 +8,7 @@
 #include "providers/bttv/BttvBadges.hpp"
 #include "providers/bttv/BttvLiveUpdates.hpp"
 #include "providers/bttv/liveupdates/BttvLiveUpdateMessages.hpp"
+#include "singletons/Settings.hpp"
 
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -103,6 +104,12 @@ void BttvLiveUpdateClient::onMessage(const QByteArray &msg)
 void BttvLiveUpdateClient::broadcastMe(const QString &channelID,
                                        const QString &userID)
 {
+    // chatterino7-yt: also gate queued/replayed presence after consent changes
+    if (!getSettings()->sendBTTVActivity || userID.isEmpty())
+    {
+        return;
+    }
+
     QJsonObject obj{
         {"name", "broadcast_me"},
         {"data",
@@ -115,6 +122,27 @@ void BttvLiveUpdateClient::broadcastMe(const QString &channelID,
     QJsonDocument doc(obj);
 
     this->sendText(doc.toJson(QJsonDocument::Compact));
+}
+
+void BttvLiveUpdateClient::subscribeImpl(const Subscription &subscription)
+{
+    if (const auto *presence =
+            std::get_if<BttvLiveUpdateBroadcastMe>(&subscription.data))
+    {
+        this->broadcastMe(presence->twitchID, presence->userID);
+        return;
+    }
+    BasicPubSubClient::subscribeImpl(subscription);
+}
+
+void BttvLiveUpdateClient::unsubscribeImpl(const Subscription &subscription)
+{
+    // chatterino7-yt: broadcast_me has no unsubscribe; do not resend presence
+    if (std::holds_alternative<BttvLiveUpdateBroadcastMe>(subscription.data))
+    {
+        return;
+    }
+    BasicPubSubClient::unsubscribeImpl(subscription);
 }
 
 }  // namespace chatterino

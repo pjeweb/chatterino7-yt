@@ -6,6 +6,7 @@
 
 #include "liveupdates/BttvLiveUpdateClient.hpp"
 #include "providers/liveupdates/BasicPubSubManager.hpp"
+#include "singletons/Settings.hpp"
 
 #include <QJsonDocument>
 
@@ -78,8 +79,12 @@ void BttvLiveUpdates::joinChannel(const QString &channelID,
     {
         this->private_->subscribe(
             {BttvLiveUpdateSubscriptionChannel{channelID}});
-        this->private_->subscribe({BttvLiveUpdateBroadcastMe{
-            .twitchID = channelID, .userID = userID}});
+        // chatterino7-yt: emote subscriptions do not require user presence
+        if (getSettings()->sendBTTVActivity && !userID.isEmpty())
+        {
+            this->private_->subscribe({BttvLiveUpdateBroadcastMe{
+                .twitchID = channelID, .userID = userID}});
+        }
     }
 }
 
