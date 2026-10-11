@@ -87,8 +87,9 @@ in memory only and clear them on disable/channel teardown.
 
 Remote providers require separate consent naming the destination and text sent.
 [DeepL](https://developers.deepl.com/api-reference/translate/request-translation)
-uses `POST /v2/translate`; its [Free/Pro endpoints and key header](https://developers.deepl.com/docs/getting-started/auth)
-are `api-free.deepl.com` / `api.deepl.com` and `DeepL-Auth-Key`. Apply request/response
+uses `POST /v2/translate`; its [Free/Pro endpoints and authorization](https://developers.deepl.com/docs/getting-started/auth)
+use `api-free.deepl.com` / `api.deepl.com` with the header
+`Authorization: DeepL-Auth-Key <key>`. Apply request/response
 limits, a user character budget, timeout and bounded rate-limit backoff; show
 errors without retrying ambiguous paid POSTs automatically. Never bundle a key.
 [LibreTranslate's API](https://docs.libretranslate.com/api/operations/translate/)

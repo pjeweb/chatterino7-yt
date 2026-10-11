@@ -58,3 +58,8 @@ Shipping any provider remains conditional on its acceptance slices.
 - Source claims cross-checked against actual upstream files and official docs.
 - No runtime tests/build required: only Markdown added; acceptance tests are
   future implementation gates, not claimed as executed here.
+
+Parent review read the complete proposal. Independent Codex review found a P2
+wording error: DeepL-Auth-Key is the Authorization scheme, not the header name.
+The design now explicitly specifies `Authorization: DeepL-Auth-Key <key>`.
+No other actionable finding was reported.
