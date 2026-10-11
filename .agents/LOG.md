@@ -24,3 +24,8 @@ Newest at the bottom. One entry per supervisor check-in or decision.
   (`QT_QPA_PLATFORM=minimal`, since the static Qt has no offscreen plugin).
   Pushed `chatterino7`; GitHub CI (Build, Ubuntu/Arch tests, CodeQL, zizmor,
   Scorecard, formatting, lint) triggered.
+- CI on `chatterino7`: Lint (Prettier) failed on the new docs; formatted with
+  `prettier@3.8.1` and added the step to the worker rules. NETWORK.md now marks
+  the implemented privacy defaults as done.
+- T02 → PR #1. Codex found a P2 gap (lines starting with `/*` or `*` skipped
+  even when they contain code); sent back to the worker. T03 started.

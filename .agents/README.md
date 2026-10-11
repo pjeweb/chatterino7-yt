@@ -19,12 +19,12 @@ flowchart LR
 
 ## Files
 
-| File | Who writes it | Purpose |
-| --- | --- | --- |
-| [`TASKS.md`](TASKS.md) | supervisor | Task board: status, branch, owner, scope |
-| [`LOG.md`](LOG.md) | supervisor | Short dated log of what happened and why |
-| [`REVIEW.md`](REVIEW.md) | supervisor | Merge checklist |
-| `reports/T##.md` | worker | What the worker did, how it was verified, open questions |
+| File                     | Who writes it | Purpose                                                  |
+| ------------------------ | ------------- | -------------------------------------------------------- |
+| [`TASKS.md`](TASKS.md)   | supervisor    | Task board: status, branch, owner, scope                 |
+| [`LOG.md`](LOG.md)       | supervisor    | Short dated log of what happened and why                 |
+| [`REVIEW.md`](REVIEW.md) | supervisor    | Merge checklist                                          |
+| `reports/T##.md`         | worker        | What the worker did, how it was verified, open questions |
 
 Goals and scope: [`docs/fork/ROADMAP.md`](../docs/fork/ROADMAP.md).
 Network policy: [`docs/fork/NETWORK.md`](../docs/fork/NETWORK.md).
@@ -84,7 +84,9 @@ On every check-in (timer, finished worker, or a fresh context):
   reason isn't obvious.
 - Verify before you report: build and test where C++ changed; run
   `zizmor .github/workflows` when workflows changed; run
-  `scripts/fork/check-network-hosts.py` when URLs changed.
+  `scripts/fork/check-network-hosts.py` when URLs changed; run
+  `npx prettier@3.8.1 --write <files>` on changed Markdown/YAML (CI's Lint job
+  fails otherwise).
 - Commit with conventional-commit messages (`feat:`, `fix:`, `ci:`, `docs:`,
   `test:`, `chore:`) and end each message with a
   `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>` trailer.
