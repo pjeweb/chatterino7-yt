@@ -25,6 +25,7 @@ import subprocess
 import sys
 from pathlib import Path
 from typing import NamedTuple
+from urllib.parse import urlsplit
 
 REPO = Path(__file__).resolve().parents[2]
 NETWORK_MD = REPO / "docs" / "fork" / "NETWORK.md"
@@ -39,10 +40,11 @@ LINK_ONLY = {
     "support.google.com",
 }
 
-URL_RE = re.compile(r"\b(?:https?|wss?)://([a-z0-9.-]+)", re.IGNORECASE)
+URL_RE = re.compile(r"\b(?:https?|wss?)://[^\s\"'<>)]+", re.IGNORECASE)
 # A whole backticked span that looks like `host`, `host/path` or `scheme://host`.
 DOC_HOST_RE = re.compile(
-    r"(?:[a-z][a-z0-9+.-]*://)?([a-z0-9.-]+)(?::\d+)?(?:/\S*)?", re.IGNORECASE
+    r"(?:[a-z][a-z0-9+.-]*://)?(\[[a-f0-9:]+\]|[a-z0-9.-]+)(?::\d+)?(?:/\S*)?",
+    re.IGNORECASE,
 )
 HUNK_RE = re.compile(r"@@ -\d+(?:,\d+)? \+(\d+)(?:,\d+)? @@")
 
@@ -55,13 +57,13 @@ class Hit(NamedTuple):
 
 def normalize_host(raw: str) -> str | None:
     """Lower-case host, or None for things that aren't remote hosts."""
-    host = raw.strip(".").lower()
-    if "." not in host:
-        return None  # localhost, single-label names, empty
+    host = raw.strip("[]").rstrip(".").lower()
     try:
         return None if ipaddress.ip_address(host).is_loopback else host
     except ValueError:
         pass
+    if "." not in host:
+        return None  # localhost, single-label names, empty
     return host if re.fullmatch(r"[a-z]{2,}", host.rsplit(".", 1)[1]) else None
 
 
@@ -79,7 +81,15 @@ def is_comment_only(text: str) -> bool:
 def hosts_in(text: str) -> list[str]:
     if is_comment_only(text):
         return []
-    return [h for h in map(normalize_host, URL_RE.findall(text)) if h]
+    hosts = []
+    for url in URL_RE.findall(text):
+        try:
+            host = urlsplit(url).hostname
+        except ValueError:
+            continue  # malformed URL; this check is not a C++/URL validator
+        if host and (normalized := normalize_host(host)):
+            hosts.append(normalized)
+    return hosts
 
 
 def documented_hosts(markdown: str) -> set[str]:

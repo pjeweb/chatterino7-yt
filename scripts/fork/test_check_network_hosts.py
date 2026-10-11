@@ -55,6 +55,17 @@ class DocumentedHostsTest(unittest.TestCase):
             self.assertIn(host, hosts)
         self.assertNotIn("scripts", hosts)
 
+    def test_documented_ipv6_destination(self):
+        hosts = cnh.documented_hosts("`https://[2001:db8::1]:443/path`")
+        self.assertEqual(hosts, {"2001:db8::1"})
+        self.assertEqual(
+            cnh.undocumented(
+                cnh.added_hosts(diff("src/a.cpp", '+get("https://[2001:db8::1]/");')),
+                hosts,
+            ),
+            [],
+        )
+
 
 class AddedHostsTest(unittest.TestCase):
     def test_documented_host_passes(self):
@@ -154,6 +165,22 @@ class AddedHostsTest(unittest.TestCase):
             '+get("http://203.0.113.7/x");',
         )
         self.assertEqual([h.host for h in missing(d)], ["203.0.113.7"])
+
+    def test_userinfo_cannot_hide_destination(self):
+        d = diff(
+            "src/h.cpp",
+            '+get("https://api.twitch.tv@tracker.example.com/collect");',
+            '+get("https://user:secret@api.twitch.tv/helix");',
+        )
+        self.assertEqual([h.host for h in missing(d)], ["tracker.example.com"])
+
+    def test_ipv6_destination_checked_loopback_ignored(self):
+        d = diff(
+            "src/h.cpp",
+            '+get("https://[2001:db8::1]:443/collect");',
+            '+redirect("http://[::1]:8080/cb");',
+        )
+        self.assertEqual([h.host for h in missing(d)], ["2001:db8::1"])
 
     def test_multiple_files_and_hunks(self):
         d = "\n".join(
