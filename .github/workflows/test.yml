@@ -16,6 +16,10 @@ env:
   HTTPBOX_TAG: v0.2.1
   QT_QPA_PLATFORM: minimal
 
+# chatterino7-yt: limit the default token; publishing jobs override as needed.
+permissions:
+  contents: read
+
 concurrency:
   group: test-ubuntu-${{ github.ref }}
   cancel-in-progress: true

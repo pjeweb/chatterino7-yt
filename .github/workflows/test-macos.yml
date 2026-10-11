@@ -14,6 +14,10 @@ env:
   HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK: 1
   CONAN_VERSION: 2.11.0
 
+# chatterino7-yt: limit the default token; publishing jobs override as needed.
+permissions:
+  contents: read
+
 concurrency:
   group: test-macos-${{ github.ref }}
   cancel-in-progress: true

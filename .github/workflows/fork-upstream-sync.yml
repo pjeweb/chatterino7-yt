@@ -5,8 +5,9 @@ name: Upstream sync
 # instead so a human can resolve it.
 #
 # The default GITHUB_TOKEN can't push upstream changes to .github/workflows and
-# its PRs don't trigger CI. For both, add a fine-grained token with read/write
-# Contents, Pull requests, Issues and Workflows as the SYNC_TOKEN secret.
+# its PR workflows require approval. For workflow pushes and automatic CI, add
+# a fine-grained token with read/write Contents, Pull requests, Issues and
+# Workflows as the SYNC_TOKEN secret.
 
 on:
   schedule:

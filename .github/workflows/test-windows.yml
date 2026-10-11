@@ -12,6 +12,10 @@ env:
   QT_QPA_PLATFORM: minimal
   CONAN_VERSION: 2.28.1
 
+# chatterino7-yt: limit the default token; publishing jobs override as needed.
+permissions:
+  contents: read
+
 concurrency:
   group: test-windows-${{ github.ref }}
   cancel-in-progress: true
