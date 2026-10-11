@@ -4,6 +4,10 @@ name: clang-tidy
 on:
   pull_request:
 
+# chatterino7-yt: limit the default token; publishing jobs override as needed.
+permissions:
+  contents: read
+
 concurrency:
   group: clang-tidy-${{ github.ref }}
   cancel-in-progress: true

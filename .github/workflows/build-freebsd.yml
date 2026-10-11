@@ -11,6 +11,10 @@ on:
   workflow_dispatch:
   merge_group:
 
+# chatterino7-yt: limit the default token; publishing jobs override as needed.
+permissions:
+  contents: read
+
 concurrency:
   group: build-freebsd-${{ github.ref }}
   cancel-in-progress: true

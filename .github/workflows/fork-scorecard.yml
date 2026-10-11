@@ -9,6 +9,10 @@ on:
 
 permissions: {}
 
+concurrency:
+  group: scorecard-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   scorecard:
     name: Scorecard
@@ -16,8 +20,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      security-events: write
-      id-token: write
+      security-events: write # upload SARIF to code scanning
+      id-token: write # authenticate to the OpenSSF API when publishing results
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:

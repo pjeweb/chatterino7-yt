@@ -2,6 +2,9 @@ name: Publish to WinGet
 on:
   release:
     types: [released]
+# chatterino7-yt: publishing uses WINGET_TOKEN, not GITHUB_TOKEN.
+permissions: {}
+
 jobs:
   publish:
     runs-on: windows-latest
