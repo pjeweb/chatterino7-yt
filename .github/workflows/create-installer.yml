@@ -21,7 +21,8 @@ jobs:
   create-installer:
     runs-on: ${{ matrix.os }}
     # Only run manually or when a build succeeds
-    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    # chatterino7-yt: publishes SevenTV's nightly and draft releases; skips check-release/draft-release too
+    if: ${{ github.repository_owner == 'SevenTV' && (github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success') }}
     strategy:
       matrix:
         qt-version: ["6.12.0"]
