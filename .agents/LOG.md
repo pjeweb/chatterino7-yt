@@ -20,3 +20,7 @@ Newest at the bottom. One entry per supervisor check-in or decision.
   also disabled the Helix follow-age lookup. Fixed by gating inside
   `IvrApi::getSubage` instead, which also leaves `UserInfoPopup.cpp` identical to
   upstream. Codex review is worth running on every merge.
+- T00 verified locally: 713/713 tests pass in the dev container
+  (`QT_QPA_PLATFORM=minimal`, since the static Qt has no offscreen plugin).
+  Pushed `chatterino7`; GitHub CI (Build, Ubuntu/Arch tests, CodeQL, zizmor,
+  Scorecard, formatting, lint) triggered.
