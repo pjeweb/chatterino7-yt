@@ -49,7 +49,7 @@ exec docker run --rm \
     -e HOME=/tmp \
     -e CCACHE_DIR=/ccache \
     -e CCACHE_MAXSIZE=20G \
-    -e QT_QPA_PLATFORM=offscreen \
+    -e QT_QPA_PLATFORM=minimal \
     -v "$repo:/src" \
     -v "$ccache_dir:/ccache" \
     -w /src \

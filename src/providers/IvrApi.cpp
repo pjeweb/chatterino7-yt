@@ -6,6 +6,7 @@
 
 #include "common/network/NetworkResult.hpp"
 #include "common/QLogging.hpp"
+#include "singletons/Settings.hpp"
 
 #include <QUrlQuery>
 
@@ -18,6 +19,13 @@ void IvrApi::getSubage(QString userName, QString channelName,
                        IvrFailureCallback failureCallback)
 {
     assert(!userName.isEmpty() && !channelName.isEmpty());
+
+    // chatterino7-yt: api.ivr.fi is a third party, so sub age is opt-in
+    if (!getSettings()->showSubageInUserCard)
+    {
+        failureCallback();
+        return;
+    }
 
     this->makeRequest(
             QString("twitch/subage/%1/%2").arg(userName).arg(channelName), {})

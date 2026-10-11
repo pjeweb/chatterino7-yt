@@ -3,21 +3,22 @@
 Status: `todo` → `active` (worker running) → `review` → `merged` | `dropped`.
 Only the supervisor edits this file. Task specs are the contract for workers.
 
-| ID | Title | Status | Build? | Depends | Branch |
-| --- | --- | --- | --- | --- | --- |
-| T00 | Foundation: dev build, privacy defaults, fork workflows | merged | yes | – | – |
-| T01 | CI hygiene: zizmor + fork-safe upstream workflows | todo | no | T00 | |
-| T02 | Network host gate (script + tests + workflow) | todo | no | T00 | |
-| T03 | Risky-feature review and safe defaults | todo | yes | T00 | |
-| T04 | YouTube design doc (official API) | todo | no | T00 | |
-| T05 | Docs pass: fork README, docs index, diagrams | todo | no | T01–T04 | |
-| T06 | Sanitizer test job (ASan/UBSan) | todo | yes | T01 | |
-| T07 | Release workflow: provenance, SBOM, checksums | todo | no | T01 | |
-| T08 | Coexistence: app name, settings dir, app ID | todo | yes | T03 | |
-| T09 | YouTube implementation (slices from T04) | todo | yes | T04 | |
-| T10 | Translation design doc | todo | no | T00 | |
-| T11 | Updater design doc (Sparkle/WinSparkle/Flathub) | todo | no | T07 | |
-| T12 | First-run network consent screen | todo | yes | T03 | |
+| ID  | Title                                                   | Status | Build? | Depends         | Branch                  |
+| --- | ------------------------------------------------------- | ------ | ------ | --------------- | ----------------------- |
+| T00 | Foundation: dev build, privacy defaults, fork workflows | merged | yes    | –               | –                       |
+| T01 | CI hygiene: zizmor + fork-safe upstream workflows       | active | no     | T00             | task/T01-ci-hygiene     |
+| T02 | Network host gate (script + tests + workflow)           | review | no     | T00             | task/T02-network-gate   |
+| T03 | Risky-feature review and safe defaults                  | active | yes    | T00             | task/T03-risky-features |
+| T04 | YouTube design doc (official API)                       | active | no     | T00             | task/T04-youtube-design |
+| T05 | Docs pass: fork README, docs index, diagrams            | todo   | no     | T01–T04         |                         |
+| T06 | Sanitizer test job (ASan/UBSan)                         | todo   | yes    | T01             |                         |
+| T07 | Release workflow: provenance, SBOM, checksums           | todo   | no     | T01             |                         |
+| T08 | Coexistence: app name, settings dir, app ID             | todo   | yes    | T03             |                         |
+| T09 | YouTube implementation (slices from T04)                | todo   | yes    | T04             |                         |
+| T10 | Translation design doc                                  | todo   | no     | T00             |                         |
+| T11 | Updater design doc (Sparkle/WinSparkle/Flathub)         | todo   | no     | T07             |                         |
+| T12 | First-run network consent screen                        | todo   | yes    | T03             |                         |
+| T13 | Re-enable full CI matrix and get it green               | todo   | no     | most of T01–T12 |                         |
 
 ---
 
@@ -163,3 +164,10 @@ singleton. Cite sources.
 A small dialog shown once on first run listing the opt-in services from
 `NETWORK.md` (recent messages, sub age, 7TV/BTTV activity, …) with
 checkboxes, all off by default. Minimal hooks into upstream.
+
+## T13 Re-enable full CI
+
+Heavy upstream workflows were paused with `gh workflow disable` at the
+user's request (see `.agents/README.md`). Before the first release, ask the
+user, then re-enable them (`gh workflow enable <file>`), run them on
+`chatterino7`, and fix anything fork-specific that fails on macOS/Windows.

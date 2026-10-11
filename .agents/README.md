@@ -9,21 +9,22 @@ flowchart LR
     S[Supervisor<br/>main worktree] -- creates worktree + branch --> W1[Worker T0x]
     S -- creates worktree + branch --> W2[Worker T0y]
     W1 -- commits on task/* branch<br/>writes reports/T0x.md --> S
+    S -- pushes branch, opens draft PR --> P[GitHub PR + CI]
     W2 -- commits on task/* branch<br/>writes reports/T0y.md --> S
-    S -- review: REVIEW.md + codex review --> D{Aligned with goals?}
-    D -- yes --> M[merge into chatterino7<br/>push]
+    P -- review: REVIEW.md + codex review --> D{Aligned with goals<br/>and CI green?}
+    D -- yes --> M[gh pr merge into chatterino7]
     D -- no --> X[drop or send back]
     S -- updates --> B[(TASKS.md / LOG.md)]
 ```
 
 ## Files
 
-| File | Who writes it | Purpose |
-| --- | --- | --- |
-| [`TASKS.md`](TASKS.md) | supervisor | Task board: status, branch, owner, scope |
-| [`LOG.md`](LOG.md) | supervisor | Short dated log of what happened and why |
-| [`REVIEW.md`](REVIEW.md) | supervisor | Merge checklist |
-| `reports/T##.md` | worker | What the worker did, how it was verified, open questions |
+| File                     | Who writes it | Purpose                                                  |
+| ------------------------ | ------------- | -------------------------------------------------------- |
+| [`TASKS.md`](TASKS.md)   | supervisor    | Task board: status, branch, owner, scope                 |
+| [`LOG.md`](LOG.md)       | supervisor    | Short dated log of what happened and why                 |
+| [`REVIEW.md`](REVIEW.md) | supervisor    | Merge checklist                                          |
+| `reports/T##.md`         | worker        | What the worker did, how it was verified, open questions |
 
 Goals and scope: [`docs/fork/ROADMAP.md`](../docs/fork/ROADMAP.md).
 Network policy: [`docs/fork/NETWORK.md`](../docs/fork/NETWORK.md).
@@ -47,22 +48,40 @@ tooling, smaller diff against upstream.
 
 ## Supervisor loop
 
+> **Heavy CI is paused at the user's request (2026-10-12).** Disabled with
+> `gh workflow disable` (no file changes): Build, Build FreeBSD, Test
+> Ubuntu/Arch/MacOS/Windows, clang-tidy (+ review poster), Create installer,
+> Publish to WinGet. Still running: Lint, Check formatting, zizmor, Network
+> host gate, CodeQL, Scorecard, REUSE, EventSub python test. Until it's
+> re-enabled, the local `scripts/dev/docker-build.sh check` is the merge gate
+> for C++ changes. Re-enable with `gh workflow enable <file>` before the first
+> release (task T13).
+
+All progress is visible on GitHub (pjeweb/chatterino7-yt): every task is a PR.
+
 On every check-in (timer, finished worker, or a fresh context):
 
 1. Read `TASKS.md` and the tail of `LOG.md`.
-2. For each worker that finished: read `reports/T##.md`, review the branch
-   against `REVIEW.md` (`git diff chatterino7...task/T##-*`), and run
-   `codex exec review` on it for a second opinion.
-3. Merge only what clearly fits the north star (`git merge --no-ff`). Run
-   `scripts/dev/docker-build.sh check` on the result if C++ changed, then
-   push `chatterino7`. Otherwise send it back with notes or drop it, and log
-   why.
-4. Remove finished worktrees (`git worktree remove`).
-5. Start new workers for `todo` tasks whose dependencies are merged. At most
+2. Push every task branch that has new commits
+   (`git push -u origin task/T##-*`) and make sure it has a **draft PR**
+   against `chatterino7` titled `T##: <title>`, with a body linking to the
+   task spec. Link each new PR to this thread (`link_pull_request`).
+3. For each worker that finished: read `reports/T##.md` (put its summary in
+   the PR body), review the diff against `REVIEW.md`, and get a second
+   opinion with `cd ~/.t3/projects/c7yt-wt/T## && codex exec review --base chatterino7`
+   (`--base`/`--commit` can't be combined with a custom prompt). Post the
+   review outcome as a PR comment.
+4. Merge only what clearly fits the north star. Run
+   `scripts/dev/docker-build.sh check` locally if C++ changed, mark the PR
+   ready, wait for CI to go green, then `gh pr merge --merge --delete-branch`
+   and `git pull` in the main worktree. Otherwise request changes (comment +
+   send the worker back) or close the PR, and log why.
+5. Remove finished worktrees (`git worktree remove`).
+6. Start new workers for `todo` tasks whose dependencies are merged. At most
    3 workers at once, at most 2 of them doing C++ builds.
-6. Add quality tasks you notice (tooling, tests, linting, docs clarity,
+7. Add quality tasks you notice (tooling, tests, linting, docs clarity,
    turning off risky features). Don't add features beyond the roadmap.
-7. Update `TASKS.md` and append to `LOG.md`.
+8. Update `TASKS.md` and append to `LOG.md`, commit and push `chatterino7`.
 
 ## Worker rules
 
@@ -74,7 +93,9 @@ On every check-in (timer, finished worker, or a fresh context):
   reason isn't obvious.
 - Verify before you report: build and test where C++ changed; run
   `zizmor .github/workflows` when workflows changed; run
-  `scripts/fork/check-network-hosts.py` when URLs changed.
+  `scripts/fork/check-network-hosts.py` when URLs changed; run
+  `npx prettier@3.8.1 --write <files>` on changed Markdown/YAML (CI's Lint job
+  fails otherwise).
 - Commit with conventional-commit messages (`feat:`, `fix:`, `ci:`, `docs:`,
   `test:`, `chore:`) and end each message with a
   `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>` trailer.
