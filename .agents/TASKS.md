@@ -10,11 +10,11 @@ Only the supervisor edits this file. Task specs are the contract for workers.
 | T02 | Network host gate (script + tests + workflow)           | merged | no     | T00             | PR #2 (also covers #1) |
 | T03 | Risky-feature review and safe defaults                  | merged | yes    | T00             | PR #5                  |
 | T04 | YouTube design doc (official API)                       | merged | no     | T00             | PR #4                  |
-| T05 | Docs pass: fork README, docs index, diagrams            | todo   | no     | T01–T04         |                        |
+| T05 | Docs pass: fork README, docs index, diagrams            | active | no     | T01–T04         |                        |
 | T06 | Sanitizer test job (ASan/UBSan)                         | active | yes    | T01             | night/T06-sanitizers   |
 | T07 | Release workflow: provenance, SBOM, checksums           | todo   | no     | T01             |                        |
-| T08 | Coexistence: app name, settings dir, app ID             | active | yes    | T03             | PR #7 / night/T08-packaging-review |
-| T09 | YouTube implementation (slices from T04)                | todo   | yes    | T04             |                        |
+| T08 | Coexistence: app name, settings dir, app ID             | merged | yes    | T03             | PR #7                  |
+| T09 | YouTube implementation (slices from T04)                | active | yes    | T04             |                        |
 | T10 | Translation design doc                                  | merged | no     | T00             | PR #6                  |
 | T11 | Updater design doc (Sparkle/WinSparkle/Flathub)         | todo   | no     | T07             |                        |
 | T12 | First-run network consent screen                        | todo   | yes    | T03             |                        |

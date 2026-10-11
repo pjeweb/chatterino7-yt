@@ -41,8 +41,8 @@ is the previous pass’s historical record, superseded by this ownership notice.
 | ---- | -------- | ---------------------------------------------------------------------- |
 | T06  | Codex    | active, `c7yt-night/T06`; local sanitizer proof + manual-only workflow |
 | T10  | Codex    | merged PR #6; translation design only                                  |
-| T08  | Cursor   | active under controller; c7yt-night/T08 coexistence                    |
-| T09a | Codex    | queued, `c7yt-night/T09a`; offline YouTube models/parsers              |
+| T08  | Cursor   | merged PR #7, including isolated packaging corrections T08r            |
+| T09a | Codex    | active after T08 validation, `c7yt-night/T09a`; offline models/parsers |
 | T07  | Claude   | queued after renewal, `c7yt-night/T07`; provenance/release workflow    |
 
 Follow-on tasks come from TASKS.md and youtube.md’s six slices. Select small,
@@ -67,7 +67,7 @@ blocked work, including provider limits or any missing PR registration.
 ## Installed controller
 
 User service `c7yt-night.service` is running with linger enabled. Its runtime
-controller passed 25 recovery/limits/dispatch/shutdown tests before launch.
+controller passed 29 recovery/limits/dispatch/shutdown/classification tests before launch.
 Cursor’s actual session started successfully from its assigned stdin prompt.
 Native foreground work reserves slots until handoff; afterward the controller
 schedules the independent supervisor lane and assigned workers. Logs and

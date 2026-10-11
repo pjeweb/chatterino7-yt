@@ -68,3 +68,7 @@ Newest at the bottom. One entry per supervisor check-in or decision.
 ## 2026-10-12 01:51 — T08 packaging review
 
 Cursor completed T08 (671 Linux tests reported). Independent Codex review found stale Linux/macOS bundle and Windows PDB consumers after the executable rename. Draft PR #7 contains the implementation; isolated Cursor follow-up T08r corrects those consumers. T09a/T05 wait for T08r validation. Root builds BUILD_APP=ON separately; cross-platform execution remains unproven. User confirms Cursor on-demand usage is disabled. Heavy CI remains paused/manual-only.
+
+## 2026-10-12 — T08 merged after review
+
+Merged PR #7 at d7c6e13cd after corrected packaging paths, independent Codex review with no actionable findings, and all enabled CI green at978739a30. A clean Docker BUILD_APP=ON build passed671/671 tests with no failed attempts; the new chatterino7-yt executable ran --version under network-none and isolated HOME. Windows/macOS packaging remains source-inspected, not executed. T08/T08r worker evidence remains unchanged; downstream clean pending checkouts will advance to main before validation unlocks T09a (Codex offline parsers) and T05 (Cursor docs). Original Claude worktrees and paused heavy CI stay preserved. Native T06 is clearing real lifetime findings without suppressions.
