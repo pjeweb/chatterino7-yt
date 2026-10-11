@@ -1,5 +1,8 @@
 # Agent coordination
 
+> Before resuming T01–T04, read [CODEX-HANDOFF.md](CODEX-HANDOFF.md).
+> Codex is continuing in isolated branches; reconcile its PRs before merging duplicate work.
+
 This directory lets a supervisor agent and several worker agents keep working
 on chatterino7-yt across sessions and context resets. Everything an agent
 needs to pick up where the last one stopped is in here.
