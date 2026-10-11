@@ -110,19 +110,41 @@ class AddedHostsTest(unittest.TestCase):
         )
         self.assertEqual(missing(d), [])
 
-    def test_comment_lines_skipped_but_trailing_comments_checked(self):
+    def test_comment_only_lines_skipped(self):
         d = diff(
             "src/g.cpp",
-            "+﻿// SPDX <https://dev.example.com>",
-            "+/* https://dev.example.com/docs */",
-            "+ * https://dev.example.com/docs",
+            "+\ufeff// SPDX <https://dev.example.com>",
+            '+    // get("https://dev.example.com/x");',
+            "+/** See https://dev.example.com/docs */",
+            "+ * https://dev.example.com/docs/liveChatMessages",
+            "+ */",
+        )
+        self.assertEqual(cnh.added_hosts(d), [])
+
+    def test_code_on_comment_lines_checked(self):
+        d = diff(
+            "src/g.cpp",
+            '+/* endpoint */ get("https://tracker.example.com");',
+            '+* out = "https://tracker.example.com";',
+            '+*out = "https://tracker.example.com";',
             '+get("https://cdn.example.net/x"); // https://dev.example.com',
-            '+*out = "https://deref.example.net";',
         )
         self.assertEqual(
             [(h.host, h.line) for h in missing(d)],
-            [("cdn.example.net", 13), ("dev.example.com", 13), ("deref.example.net", 14)],
+            [
+                ("tracker.example.com", 10),
+                ("tracker.example.com", 11),
+                ("tracker.example.com", 12),
+                ("cdn.example.net", 13),
+                ("dev.example.com", 13),
+            ],
         )
+
+    def test_is_comment_only(self):
+        for line in ("// x", "  /* x", " * x", " */", "/* x */", "*"):
+            self.assertTrue(cnh.is_comment_only(line), line)
+        for line in ('/* x */ f("u");', '* p = "u";', "/* a */ f(); /* b */", "f(); // x"):
+            self.assertFalse(cnh.is_comment_only(line), line)
 
     def test_loopback_ignored_other_ips_flagged(self):
         d = diff(

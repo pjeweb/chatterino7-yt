@@ -13,7 +13,8 @@ Rules:
 - A host is any `http(s)://` or `ws(s)://` URL host in an added line.
 - It passes if NETWORK.md mentions it in backticks (`host` or `host/path`), or
   it is in LINK_ONLY. Matching is exact: subdomains are not covered.
-- Comment-only lines, localhost and loopback addresses are ignored.
+- Comment-only lines (see is_comment_only), localhost and loopback addresses
+  are ignored.
 
 This is a tripwire, not a proof: hosts assembled at runtime are not seen.
 """
@@ -43,7 +44,6 @@ URL_RE = re.compile(r"\b(?:https?|wss?)://([a-z0-9.-]+)", re.IGNORECASE)
 DOC_HOST_RE = re.compile(
     r"(?:[a-z][a-z0-9+.-]*://)?([a-z0-9.-]+)(?::\d+)?(?:/\S*)?", re.IGNORECASE
 )
-COMMENT_RE = re.compile(r"\s*(?://|/\*|\*(?:\s|/|$))")
 HUNK_RE = re.compile(r"@@ -\d+(?:,\d+)? \+(\d+)(?:,\d+)? @@")
 
 
@@ -65,8 +65,19 @@ def normalize_host(raw: str) -> str | None:
     return host if re.fullmatch(r"[a-z]{2,}", host.rsplit(".", 1)[1]) else None
 
 
+def is_comment_only(text: str) -> bool:
+    """True for `//` lines, and for `/*` or `*` lines with no string literal
+    and no code after the first `*/`. Anything else counts as code."""
+    line = text.lstrip("\ufeff").strip()  # some files start with a BOM
+    if line.startswith("//"):
+        return True
+    if not line.startswith(("/*", "*")) or '"' in line:
+        return False
+    return line.find("*/") in (-1, len(line) - 2)
+
+
 def hosts_in(text: str) -> list[str]:
-    if COMMENT_RE.match(text.lstrip("﻿")):  # some files start with a BOM
+    if is_comment_only(text):
         return []
     return [h for h in map(normalize_host, URL_RE.findall(text)) if h]
 
