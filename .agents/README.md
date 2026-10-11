@@ -51,8 +51,9 @@ On every check-in (timer, finished worker, or a fresh context):
 
 1. Read `TASKS.md` and the tail of `LOG.md`.
 2. For each worker that finished: read `reports/T##.md`, review the branch
-   against `REVIEW.md` (`git diff chatterino7...task/T##-*`), and run
-   `codex exec review` on it for a second opinion.
+   against `REVIEW.md` (`git diff chatterino7...task/T##-*`), and get a
+   second opinion: `cd ~/.t3/projects/c7yt-wt/T## && codex exec review --base chatterino7`
+   (`--base`/`--commit` can't be combined with a custom prompt).
 3. Merge only what clearly fits the north star (`git merge --no-ff`). Run
    `scripts/dev/docker-build.sh check` on the result if C++ changed, then
    push `chatterino7`. Otherwise send it back with notes or drop it, and log
