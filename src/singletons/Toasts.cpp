@@ -6,6 +6,7 @@
 
 #include "Application.hpp"
 #include "common/Common.hpp"
+#include "common/ForkIdentity.hpp"
 #include "common/Literals.hpp"
 #include "common/QLogging.hpp"
 #include "common/Version.hpp"
@@ -350,7 +351,7 @@ void Toasts::ensureInitialized()
     {
         return;
     }
-    auto result = notify_init("Chatterino 7TV");
+    auto result = notify_init(fork::DISPLAY_NAME);
 
     if (result == 0)
     {
@@ -371,9 +372,8 @@ void Toasts::sendLibnotify(const QString &channelName,
     NotifyNotification *notif = notify_notification_new(
         str.toUtf8().constData(), channelTitle.toUtf8().constData(), nullptr);
 
-    notify_notification_set_hint(
-        notif, "desktop-entry",
-        g_variant_new_string("com.chatterino.chatterino"));
+    notify_notification_set_hint(notif, "desktop-entry",
+                                 g_variant_new_string(fork::DESKTOP_FILE_ID));
 
     // this will be freed in onNotificationDestroyed
     auto *channelNameHeap = new QString(channelName);

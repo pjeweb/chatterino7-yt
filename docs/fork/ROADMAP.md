@@ -33,8 +33,9 @@ client IDs.
 - [x] GitHub fork of SevenTV/chatterino7 with full history
 - [x] Reproducible local build (`scripts/dev/docker-build.sh`)
 - [ ] Scheduled upstream-sync workflow that opens a PR when chatterino7 moves
-- [ ] Rebrand: app name, app ID, settings directory and icons, so the fork can
-      be installed next to Chatterino/chatterino7
+- [x] Coexistence identity: app name, app ID, settings directory (icons still
+      shared pixels; no full visual rebrand) so the fork can install next to
+      Chatterino/chatterino7
 
 ### 1. Privacy
 

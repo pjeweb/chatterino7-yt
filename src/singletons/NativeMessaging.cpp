@@ -5,6 +5,7 @@
 #include "singletons/NativeMessaging.hpp"
 
 #include "Application.hpp"
+#include "common/ForkIdentity.hpp"
 #include "common/Literals.hpp"
 #include "common/Modes.hpp"
 #include "common/QLogging.hpp"
@@ -51,11 +52,13 @@ struct Config {
 #endif
 };
 
+// Host name matches fork::DESKTOP_FILE_ID so this install does not overwrite
+// Chatterino / chatterino7 native-messaging registration.
 const Config FIREFOX{
 #ifdef Q_OS_WIN
     .fileName = u"native-messaging-manifest-firefox.json"_s,
     .registryKey =
-        u"HKCU\\Software\\Mozilla\\NativeMessagingHosts\\com.chatterino.chatterino"_s,
+        u"HKCU\\Software\\Mozilla\\NativeMessagingHosts\\com.chatterino7yt.chatterino7yt"_s,
 #elif defined(Q_OS_MACOS)
     .browserDirectory = u"~/Library/Application Support/Mozilla"_s,
     .nmDirectory = u"NativeMessagingHosts"_s,
@@ -69,7 +72,7 @@ const Config CHROME{
 #ifdef Q_OS_WIN
     .fileName = u"native-messaging-manifest-chrome.json"_s,
     .registryKey =
-        u"HKCU\\Software\\Google\\Chrome\\NativeMessagingHosts\\com.chatterino.chatterino"_s,
+        u"HKCU\\Software\\Google\\Chrome\\NativeMessagingHosts\\com.chatterino7yt.chatterino7yt"_s,
 #elif defined(Q_OS_MACOS)
     .browserDirectory = u"~/Library/Application Support/Google/Chrome/"_s,
     .nmDirectory = u"NativeMessagingHosts"_s,
@@ -103,7 +106,8 @@ ExpectedStr<void> registerNmManifest([[maybe_unused]] const Paths &paths,
     }
 #else
     return writeManifestTo(config.browserDirectory, config.nmDirectory,
-                           u"com.chatterino.chatterino.json"_s, document);
+                           QLatin1String(fork::DESKTOP_FILE_ID) + u".json"_s,
+                           document);
 #endif
     return {};
 }
@@ -111,8 +115,8 @@ ExpectedStr<void> registerNmManifest([[maybe_unused]] const Paths &paths,
 QJsonObject buildBaseDocument()
 {
     return QJsonObject{
-        {u"name"_s, "com.chatterino.chatterino"_L1},
-        {u"description"_s, "Browser interaction with chatterino."_L1},
+        {u"name"_s, QLatin1String(fork::DESKTOP_FILE_ID)},
+        {u"description"_s, "Browser interaction with chatterino7-yt."_L1},
         {u"path"_s, QCoreApplication::applicationFilePath()},
         {u"type"_s, "stdio"_L1},
     };

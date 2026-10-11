@@ -72,7 +72,7 @@ cp /usr/share/doc/libc6/copyright appdir/usr/share/doc/libc6/
 echo "Run LinuxDeployQT"
 ./"$linuxdeployqt_path" \
     --appimage-extract-and-run \
-    appdir/usr/share/applications/com.chatterino.chatterino.desktop \
+    appdir/usr/share/applications/com.chatterino7yt.chatterino7yt.desktop \
     -no-translations \
     -bundle-non-qt-libs \
     -unsupported-allow-new-glibc

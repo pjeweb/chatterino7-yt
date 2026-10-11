@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=chatterino7-yt
+Comment=Chat client for Twitch (chatterino7 fork with YouTube planned)
+Exec=chatterino7-yt
+Icon=com.chatterino7yt.chatterino7yt
+Terminal=false
+Categories=Network;InstantMessaging;
+StartupWMClass=chatterino7-yt

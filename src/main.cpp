@@ -5,6 +5,7 @@
 #include "BrowserExtension.hpp"
 #include "common/Args.hpp"
 #include "common/Env.hpp"
+#include "common/ForkIdentity.hpp"
 #include "common/Modes.hpp"
 #include "common/QLogging.hpp"
 #include "common/Version.hpp"
@@ -47,14 +48,13 @@ int main(int argc, char **argv)
 {
     QApplication a(argc, argv);
 
-    QCoreApplication::setApplicationName("chatterino");
+    // chatterino7-yt: distinct Qt app name so AppDataLocation does not share
+    // settings with Chatterino / chatterino7 (see common/ForkIdentity.hpp).
+    QCoreApplication::setApplicationName(QLatin1String(fork::APPLICATION_NAME));
     QCoreApplication::setApplicationVersion(CHATTERINO_VERSION);
     QCoreApplication::setOrganizationDomain("chatterino.com");
-    // On some Linux distros such as NixOS, Qt's automatic setting of the desktop file name
-    // leads to a wrong desktop file name ("com.chatterino." instead of "com.chatterino.chatterino"),
-    // which further leads to GNOME not being able to match the window to the desktop file,
-    // so it shows up without any name or icon.
-    QGuiApplication::setDesktopFileName("com.chatterino.chatterino");
+    // Explicit desktop file ID (NixOS and others mis-derive it from org+app).
+    QGuiApplication::setDesktopFileName(QLatin1String(fork::DESKTOP_FILE_ID));
 #ifdef Q_OS_WIN
     SetCurrentProcessExplicitAppUserModelID(
         Version::instance().appUserModelID().c_str());

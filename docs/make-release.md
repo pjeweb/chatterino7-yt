@@ -16,8 +16,8 @@ I will be using `2.3.4` as the example release in this document.
   + inline const QString CHATTERINO_VERSION = QStringLiteral("2.3.4");
   ```
 
-- [ ] Updated version code in `CMakeLists.txt`  
-       If you made a beta release, this step will not be necessary.
+- [ ] Updated version code in `CMakeLists.txt`
+      If you made a beta release, this step will not be necessary.
 
   ```diff
     project(chatterino
@@ -28,8 +28,8 @@ I will be using `2.3.4` as the example release in this document.
     )
   ```
 
-- [ ] Add a new release at the top of the `releases` key in `resources/com.chatterino.chatterino.appdata.xml`  
-       The format for beta releases here differs, you have to use a tilde instead, and omit the period before the beta number.
+- [ ] Add a new release at the top of the `releases` key in `resources/com.chatterino7yt.chatterino7yt.appdata.xml`
+      The format for beta releases here differs, you have to use a tilde instead, and omit the period before the beta number.
 
   ```diff
     <releases>
@@ -41,8 +41,8 @@ I will be using `2.3.4` as the example release in this document.
         </release>
   ```
 
-- [ ] Updated version code in `.CI/chatterino-installer.iss`  
-       If you made a beta release, this step will not be necessary.
+- [ ] Updated version code in `.CI/chatterino-installer.iss`
+      If you made a beta release, this step will not be necessary.
 
   ```diff
     #define MyAppName "Chatterino"
@@ -51,8 +51,8 @@ I will be using `2.3.4` as the example release in this document.
     #define MyAppPublisher "Chatterino Team"
   ```
 
-- [ ] Update the changelog `## Unversioned` section to the new version `CHANGELOG.md`  
-       Make sure to leave the `## Unversioned` line unchanged for easier merges
+- [ ] Update the changelog `## Unversioned` section to the new version `CHANGELOG.md`
+      Make sure to leave the `## Unversioned` line unchanged for easier merges
 
   ```diff
    # Changelog
@@ -69,22 +69,22 @@ I will be using `2.3.4` as the example release in this document.
 
 You will need to add the `skip-changelog-checker` label to the PR since we are doing something you're not meant to do in a normal PR.
 
-- [ ] Ensure all GitHub API credentials from the `chatterino-ci` user are still valid  
-       Sign into the `chatterino-ci` user and validate that the `WinGet` and `Homebrew` Personal access tokens are valid: https://github.com/settings/tokens
+- [ ] Ensure all GitHub API credentials from the `chatterino-ci` user are still valid
+      Sign into the `chatterino-ci` user and validate that the `WinGet` and `Homebrew` Personal access tokens are valid: https://github.com/settings/tokens
 - [ ] Make a new tag on `pajlada/serialize`, `pajlada/signals`, and `pajlada/settings` called `chatterino/2.3.4` pointing at the commit hash Chatterino uses.
 
 ## After the PR has been merged
 
-- [ ] Tag the release  
-       Ensure you're on the correct release locally
+- [ ] Tag the release
+      Ensure you're on the correct release locally
   ```sh
   git tag v2.3.4 --annotate --message v2.3.4
   git push origin v2.3.4
   ```
-- [ ] Manually run the [create-installer](https://github.com/Chatterino/chatterino2/actions/workflows/create-installer.yml) workflow.  
-       This is only necessary if the tag was created after the CI in the main branch finished.
-- [ ] If the winget releaser action doesn't work as expected, you can run this manually using [Komac](https://github.com/russellbanks/Komac), replacing `v2.5.2` with the current release:  
-       `komac update ChatterinoTeam.Chatterino --version 2.5.2 --urls https://github.com/Chatterino/chatterino2/releases/download/v2.5.2/Chatterino.Installer.exe`
+- [ ] Manually run the [create-installer](https://github.com/Chatterino/chatterino2/actions/workflows/create-installer.yml) workflow.
+      This is only necessary if the tag was created after the CI in the main branch finished.
+- [ ] If the winget releaser action doesn't work as expected, you can run this manually using [Komac](https://github.com/russellbanks/Komac), replacing `v2.5.2` with the current release:
+      `komac update ChatterinoTeam.Chatterino --version 2.5.2 --urls https://github.com/Chatterino/chatterino2/releases/download/v2.5.2/Chatterino.Installer.exe`
 - [ ] Ensure changelog on website is up-to-date
 
 ## After all GitHub actions have ran
