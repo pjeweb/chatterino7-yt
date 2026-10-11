@@ -43,7 +43,15 @@ marked _planned_ are not implemented yet.
 | `7tv.io/v3/chatterino/version`                     | Update check                                                  | on                     | **compiled out** (signed Sparkle/WinSparkle updater _planned_) |
 | Translation provider (user-configured) _(planned)_ | Message translation via DeepL/LibreTranslate                  | n/a                    | off (on-device by default)                                     |
 
-## Never
+## Privacy policy and current limits
 
-No analytics, telemetry, heartbeats or crash uploads. Crash dumps stay on
-disk (see `LastRunCrashDialog`).
+No analytics or telemetry should be added. Optional BTTV/7TV presence reports
+are off by default; transport keepalives for active chat/WebSocket connections
+still run. Crashpad currently has no upload URL configured and defaults off
+in CMake; local crash recovery/dumps remain (see `LastRunCrashDialog`). Build
+workflows can override CMake defaults; see [feature review](FEATURES.md).
+
+This inventory is incomplete for inherited Kick support, which still uses
+private web endpoints and has no off switch. Hiding/gating that provider and
+reviewing fork OAuth ownership remain follow-up work; the roadmap describes
+the intended policy rather than a complete audit of upstream code.

@@ -21,6 +21,9 @@ public:
 
     void broadcastMe(const QString &channelID, const QString &userID);
 
+    void subscribeImpl(const Subscription &subscription);
+    void unsubscribeImpl(const Subscription &subscription);
+
 private:
     BttvLiveUpdates &manager;
 };
