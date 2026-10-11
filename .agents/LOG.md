@@ -33,3 +33,21 @@ Newest at the bottom. One entry per supervisor check-in or decision.
   workflows via `gh workflow disable` (no file changes, trivially reversible)
   and cancelled running builds. The local docker check is now the merge gate;
   T13 tracks re-enabling before the first release.
+
+- Codex continuation requested after Claude thread `a1cc37af-b92d-4d88-bfe8-6cd142813a4b`
+  hit its usage limit. Read [CODEX-HANDOFF.md](CODEX-HANDOFF.md) before resuming
+  T01–T04. Codex uses separate `codex/20261012-*` branches/checkouts and draft
+  PRs; Claude retains the original worktrees/branches and main-branch ownership.
+  Codex does not merge or push those branches and leaves heavy CI paused.
+  T02 continuation is PR #2 (includes unpushed worker fix plus URL-authority/IPv6
+  checks, 17 passing tests). Reconcile it with PR #1 before merging either.
+- Codex pass completed: T01 → PR #3 (CI permissions/audit), T02 → PR #2
+  (network gate), T03 → PR #5 (BTTV activity consent + safe-defaults audit),
+  T04 → PR #4 (YouTube design only). Independent Codex reviews found no
+  actionable regressions; T03 local build and 668/668 tests pass, T02 has 17
+  passing Python tests. Main and original Claude task HEADs remain unchanged.
+  The three shared coordination-file edits are intentional local handoff
+  changes, also proposed in PR #2; retain/reconcile them rather than discard
+  on resume. All implementation proposals remain drafts for reconciliation,
+  with heavy builds paused and original worktrees preserved. No autonomous
+  Codex timer remains running. Read CODEX-HANDOFF.md for PRs and next steps.

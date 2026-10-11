@@ -1,8 +1,10 @@
 # Network services
 
 Every host the app talks to, why, and whether it is on by default. If you
-add a new host to `src/`, add it here as well. CI will enforce this (see the
-roadmap, phase 1).
+add a new host to `src/`, add it here as well, in backticks.
+`scripts/fork/check-network-hosts.py` enforces this in CI for URLs added
+since upstream. Hosts must match exactly (a subdomain is not covered by its
+parent); comment-only lines and loopback addresses are ignored.
 
 "Upstream default" is chatterino7's default; "Fork default" is ours. Rows
 marked _planned_ are not implemented yet.

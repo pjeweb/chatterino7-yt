@@ -1,0 +1,38 @@
+name: Network host gate
+
+# Fails when fork code adds a URL host under src/ that docs/fork/NETWORK.md
+# doesn't list. See scripts/fork/check-network-hosts.py.
+
+on:
+  push:
+    branches: [chatterino7]
+  pull_request:
+
+permissions: {}
+
+concurrency:
+  group: network-hosts-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: Check network hosts
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0 # merge base with upstream needs full history
+          persist-credentials: false
+
+      - name: Fetch upstream
+        run: >-
+          git fetch --no-tags https://github.com/SevenTV/chatterino7
+          +refs/heads/chatterino7:refs/remotes/upstream/chatterino7
+
+      - name: Unit tests
+        run: python3 -m unittest discover -s scripts/fork -p 'test_*.py' -v
+
+      - name: Check hosts
+        run: python3 scripts/fork/check-network-hosts.py
