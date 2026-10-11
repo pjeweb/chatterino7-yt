@@ -64,3 +64,7 @@ Newest at the bottom. One entry per supervisor check-in or decision.
   board/controller access and current-thread T3 PR registration. Foreground
   parent retained integration while native T06 finishes. T10 design merged via
   PR #6 after correcting the independent review’s DeepL Authorization wording.
+
+## 2026-10-12 01:51 — T08 packaging review
+
+Cursor completed T08 (671 Linux tests reported). Independent Codex review found stale Linux/macOS bundle and Windows PDB consumers after the executable rename. Draft PR #7 contains the implementation; isolated Cursor follow-up T08r corrects those consumers. T09a/T05 wait for T08r validation. Root builds BUILD_APP=ON separately; cross-platform execution remains unproven. User confirms Cursor on-demand usage is disabled. Heavy CI remains paused/manual-only.

@@ -13,7 +13,7 @@ Only the supervisor edits this file. Task specs are the contract for workers.
 | T05 | Docs pass: fork README, docs index, diagrams            | todo   | no     | T01–T04         |                        |
 | T06 | Sanitizer test job (ASan/UBSan)                         | active | yes    | T01             | night/T06-sanitizers   |
 | T07 | Release workflow: provenance, SBOM, checksums           | todo   | no     | T01             |                        |
-| T08 | Coexistence: app name, settings dir, app ID             | active | yes    | T03             | night/T08-coexistence  |
+| T08 | Coexistence: app name, settings dir, app ID             | active | yes    | T03             | PR #7 / night/T08-packaging-review |
 | T09 | YouTube implementation (slices from T04)                | todo   | yes    | T04             |                        |
 | T10 | Translation design doc                                  | merged | no     | T00             | PR #6                  |
 | T11 | Updater design doc (Sparkle/WinSparkle/Flathub)         | todo   | no     | T07             |                        |
