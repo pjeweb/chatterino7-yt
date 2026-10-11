@@ -4,9 +4,9 @@ name: Upstream sync
 # If the merge conflicts, an issue listing the conflicting files is opened
 # instead so a human can resolve it.
 #
-# PRs opened with the default GITHUB_TOKEN don't trigger other workflows. Add a
-# fine-grained token with contents+pull-requests write as the SYNC_TOKEN secret
-# to get CI on sync PRs.
+# The default GITHUB_TOKEN can't push upstream changes to .github/workflows and
+# its PRs don't trigger CI. For both, add a fine-grained token with read/write
+# Contents, Pull requests, Issues and Workflows as the SYNC_TOKEN secret.
 
 on:
   schedule:
@@ -26,12 +26,13 @@ env:
 
 jobs:
   sync:
+    name: Sync from upstream
     if: github.repository_owner != 'SevenTV'
     runs-on: ubuntu-latest
     permissions:
-      contents: write
-      pull-requests: write
-      issues: write
+      contents: write # push the sync/upstream branch
+      pull-requests: write # open or update the sync PR
+      issues: write # open or close the conflict issue
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
