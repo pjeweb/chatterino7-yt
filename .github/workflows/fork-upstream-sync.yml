@@ -1,0 +1,94 @@
+name: Upstream sync
+
+# Opens (or updates) a PR that merges SevenTV/chatterino7 into this fork.
+# If the merge conflicts, an issue listing the conflicting files is opened
+# instead so a human can resolve it.
+#
+# PRs opened with the default GITHUB_TOKEN don't trigger other workflows. Add a
+# fine-grained token with contents+pull-requests write as the SYNC_TOKEN secret
+# to get CI on sync PRs.
+
+on:
+  schedule:
+    - cron: "41 3 * * *"
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: upstream-sync
+  cancel-in-progress: false
+
+env:
+  UPSTREAM_REPO: SevenTV/chatterino7
+  UPSTREAM_BRANCH: chatterino7
+  BASE_BRANCH: chatterino7
+
+jobs:
+  sync:
+    if: github.repository_owner != 'SevenTV'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ env.BASE_BRANCH }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Merge upstream
+        env:
+          GH_TOKEN: ${{ secrets.SYNC_TOKEN || github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git fetch --no-tags "https://github.com/${UPSTREAM_REPO}" "${UPSTREAM_BRANCH}"
+          upstream_sha="$(git rev-parse FETCH_HEAD)"
+          short="${upstream_sha:0:9}"
+
+          if git merge-base --is-ancestor "$upstream_sha" HEAD; then
+            echo "Already up to date with ${UPSTREAM_REPO}@${short}"
+            exit 0
+          fi
+
+          behind="$(git rev-list --count "HEAD..${upstream_sha}")"
+          branch="sync/upstream"
+          git switch -c "$branch"
+
+          if ! git merge --no-ff --no-edit -m "Merge ${UPSTREAM_REPO}@${short}" "$upstream_sha"; then
+            conflicts="$(git diff --name-only --diff-filter=U)"
+            git merge --abort
+            title="Upstream sync conflicts with ${UPSTREAM_REPO}@${short}"
+            body="$(printf 'Merging %s commits from %s@%s conflicts in:\n\n```\n%s\n```\n\nResolve locally:\n\n```sh\ngit fetch https://github.com/%s %s\ngit merge FETCH_HEAD\n```\n' \
+              "$behind" "$UPSTREAM_REPO" "$short" "$conflicts" "$UPSTREAM_REPO" "$UPSTREAM_BRANCH")"
+            existing="$(gh issue list --repo "$REPO" --state open --label upstream-sync --json number --jq '.[0].number // empty')"
+            if [ -n "$existing" ]; then
+              gh issue edit "$existing" --repo "$REPO" --title "$title" --body "$body"
+            else
+              gh label create upstream-sync --repo "$REPO" --color 0E8A16 --force
+              gh issue create --repo "$REPO" --title "$title" --body "$body" --label upstream-sync
+            fi
+            exit 1
+          fi
+
+          git push --force "https://x-access-token:${GH_TOKEN}@github.com/${REPO}.git" "HEAD:refs/heads/${branch}"
+
+          for issue in $(gh issue list --repo "$REPO" --state open --label upstream-sync --json number --jq '.[].number'); do
+            gh issue close "$issue" --repo "$REPO" --comment "Merged cleanly as of ${UPSTREAM_REPO}@${short}."
+          done
+
+          title="Merge upstream ${UPSTREAM_REPO}@${short}"
+          body="$(printf 'Merges %s new commits from %s.\n\nCompare: https://github.com/%s/compare/%s...%s\n' \
+            "$behind" "$UPSTREAM_REPO" "$UPSTREAM_REPO" "$(git merge-base HEAD^1 "$upstream_sha" | cut -c1-9)" "$short")"
+          existing="$(gh pr list --repo "$REPO" --head "$branch" --state open --json number --jq '.[0].number // empty')"
+          if [ -n "$existing" ]; then
+            gh pr edit "$existing" --repo "$REPO" --title "$title" --body "$body"
+          else
+            gh pr create --repo "$REPO" --base "$BASE_BRANCH" --head "$branch" --title "$title" --body "$body"
+          fi

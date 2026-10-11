@@ -465,7 +465,8 @@ jobs:
   create-release:
     needs: [build-ubuntu-docker, build-flatpak, build]
     runs-on: ubuntu-latest
-    if: (github.event_name == 'push' && github.ref == 'refs/heads/chatterino7')
+    # chatterino7-yt: nightlies are SevenTV's; fork releases go through fork-release.yml
+    if: (github.event_name == 'push' && github.ref == 'refs/heads/chatterino7' && github.repository_owner == 'SevenTV')
     permissions:
       contents: write # create release
 
