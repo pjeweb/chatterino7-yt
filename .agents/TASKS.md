@@ -11,11 +11,11 @@ Only the supervisor edits this file. Task specs are the contract for workers.
 | T03 | Risky-feature review and safe defaults                  | merged | yes    | T00             | PR #5                  |
 | T04 | YouTube design doc (official API)                       | merged | no     | T00             | PR #4                  |
 | T05 | Docs pass: fork README, docs index, diagrams            | todo   | no     | T01–T04         |                        |
-| T06 | Sanitizer test job (ASan/UBSan)                         | active | yes    | T01             |                        |
+| T06 | Sanitizer test job (ASan/UBSan)                         | active | yes    | T01             | night/T06-sanitizers   |
 | T07 | Release workflow: provenance, SBOM, checksums           | todo   | no     | T01             |                        |
-| T08 | Coexistence: app name, settings dir, app ID             | todo   | yes    | T03             |                        |
+| T08 | Coexistence: app name, settings dir, app ID             | active | yes    | T03             | night/T08-coexistence  |
 | T09 | YouTube implementation (slices from T04)                | todo   | yes    | T04             |                        |
-| T10 | Translation design doc                                  | active | no     | T00             |                        |
+| T10 | Translation design doc                                  | review | no     | T00             | PR #6                  |
 | T11 | Updater design doc (Sparkle/WinSparkle/Flathub)         | todo   | no     | T07             |                        |
 | T12 | First-run network consent screen                        | todo   | yes    | T03             |                        |
 | T13 | Re-enable full CI matrix and get it green               | todo   | no     | most of T01–T12 |                        |

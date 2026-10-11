@@ -17,10 +17,14 @@ yield integration to the controller until it stops or explicit handover.
 Runtime: `~/.t3/projects/c7yt-night-runtime/`. Its controller owns a process
 lock, persisted sessions/cooldowns and completion validation. The foreground
 Codex supervisor holds its `FOREGROUND` marker while setting up/reviewing.
-After handoff, a subscription-backed supervisor lane uses the dedicated
-`~/.t3/projects/c7yt-night/supervisor` checkout. Workers never integrate.
+After handoff, the subscription-backed supervisor lane exclusively owns
+`~/.t3/projects/chatterino7-yt` on `chatterino7`; the separate
+`c7yt-night/supervisor` checkout is available for review builds. Workers never
+integrate or modify either supervisor area.
 
-At most three worker/supervisor model processes, and at most two C++ builds.
+At most three workers plus one supervisor, and at most two C++ builds. The
+detached controller uses a stricter cap of three model processes including its
+supervisor; foreground/native workers reserve slots explicitly.
 Each worker owns one checkout and branch under `c7yt-night/`, with no edits to
 main, other worktrees, shared board, global CLI settings or billing settings.
 Quota-limited providers back off and resume their exact saved session/worktree;
@@ -59,3 +63,14 @@ The controller will stop new launches and end its own worker process groups
 with a checkpoint grace period. It never kills unrelated sessions or removes
 worktrees. Morning summary must distinguish implemented, tested, proposed and
 blocked work, including provider limits or any missing PR registration.
+
+## Installed controller
+
+User service `c7yt-night.service` is running with linger enabled. Its runtime
+controller passed 25 recovery/limits/dispatch/shutdown tests before launch.
+Cursor’s actual session started successfully from its assigned stdin prompt.
+Native foreground work reserves slots until handoff; afterward the controller
+schedules the independent supervisor lane and assigned workers. Logs and
+statuses are in the private runtime `events.jsonl`/`state.json`, not provider
+raw output. T3 PR registration uses the current thread credential; failure
+must be reported and leaves the proposal unmerged.
