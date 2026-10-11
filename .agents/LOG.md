@@ -16,3 +16,7 @@ Newest at the bottom. One entry per supervisor check-in or decision.
   updater only; no analytics/heartbeats; Twitch via Helix only.
 - Process: supervisor + up to 3 Claude workers in worktrees; `codex exec review`
   as an independent reviewer before merges.
+- First codex review (privacy-defaults commit) caught a real bug: the sub-age gate
+  also disabled the Helix follow-age lookup. Fixed by gating inside
+  `IvrApi::getSubage` instead, which also leaves `UserInfoPopup.cpp` identical to
+  upstream. Codex review is worth running on every merge.
