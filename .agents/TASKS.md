@@ -3,22 +3,22 @@
 Status: `todo` → `active` (worker running) → `review` → `merged` | `dropped`.
 Only the supervisor edits this file. Task specs are the contract for workers.
 
-| ID  | Title                                                   | Status | Build? | Depends         | Branch                  |
-| --- | ------------------------------------------------------- | ------ | ------ | --------------- | ----------------------- |
-| T00 | Foundation: dev build, privacy defaults, fork workflows | merged | yes    | –               | –                       |
-| T01 | CI hygiene: zizmor + fork-safe upstream workflows       | active | no     | T00             | task/T01-ci-hygiene     |
-| T02 | Network host gate (script + tests + workflow)           | review | no     | T00             | task/T02-network-gate   |
-| T03 | Risky-feature review and safe defaults                  | active | yes    | T00             | task/T03-risky-features |
-| T04 | YouTube design doc (official API)                       | active | no     | T00             | task/T04-youtube-design |
-| T05 | Docs pass: fork README, docs index, diagrams            | todo   | no     | T01–T04         |                         |
-| T06 | Sanitizer test job (ASan/UBSan)                         | todo   | yes    | T01             |                         |
-| T07 | Release workflow: provenance, SBOM, checksums           | todo   | no     | T01             |                         |
-| T08 | Coexistence: app name, settings dir, app ID             | todo   | yes    | T03             |                         |
-| T09 | YouTube implementation (slices from T04)                | todo   | yes    | T04             |                         |
-| T10 | Translation design doc                                  | todo   | no     | T00             |                         |
-| T11 | Updater design doc (Sparkle/WinSparkle/Flathub)         | todo   | no     | T07             |                         |
-| T12 | First-run network consent screen                        | todo   | yes    | T03             |                         |
-| T13 | Re-enable full CI matrix and get it green               | todo   | no     | most of T01–T12 |                         |
+| ID  | Title                                                   | Status | Build? | Depends         | Branch                 |
+| --- | ------------------------------------------------------- | ------ | ------ | --------------- | ---------------------- |
+| T00 | Foundation: dev build, privacy defaults, fork workflows | merged | yes    | –               | –                      |
+| T01 | CI hygiene: zizmor + fork-safe upstream workflows       | merged | no     | T00             | PR #3                  |
+| T02 | Network host gate (script + tests + workflow)           | merged | no     | T00             | PR #2 (also covers #1) |
+| T03 | Risky-feature review and safe defaults                  | merged | yes    | T00             | PR #5                  |
+| T04 | YouTube design doc (official API)                       | merged | no     | T00             | PR #4                  |
+| T05 | Docs pass: fork README, docs index, diagrams            | todo   | no     | T01–T04         |                        |
+| T06 | Sanitizer test job (ASan/UBSan)                         | active | yes    | T01             |                        |
+| T07 | Release workflow: provenance, SBOM, checksums           | todo   | no     | T01             |                        |
+| T08 | Coexistence: app name, settings dir, app ID             | todo   | yes    | T03             |                        |
+| T09 | YouTube implementation (slices from T04)                | todo   | yes    | T04             |                        |
+| T10 | Translation design doc                                  | active | no     | T00             |                        |
+| T11 | Updater design doc (Sparkle/WinSparkle/Flathub)         | todo   | no     | T07             |                        |
+| T12 | First-run network consent screen                        | todo   | yes    | T03             |                        |
+| T13 | Re-enable full CI matrix and get it green               | todo   | no     | most of T01–T12 |                        |
 
 ---
 

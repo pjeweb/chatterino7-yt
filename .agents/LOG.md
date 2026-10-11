@@ -51,3 +51,11 @@ Newest at the bottom. One entry per supervisor check-in or decision.
   on resume. All implementation proposals remain drafts for reconciliation,
   with heavy builds paused and original worktrees preserved. No autonomous
   Codex timer remains running. Read CODEX-HANDOFF.md for PRs and next steps.
+
+- User authorized the overnight Codex/Cursor/Claude loop with natural quota
+  renewal and no reset credits. Cursor on-demand usage is disabled (confirmed).
+  Retired the stalled old Claude process gracefully and preserved its transcript.
+  Merged reviewed PRs #2/#3/#4/#5; #1 is covered by #2 and marked merged by GitHub.
+  Only the designated night supervisor integrates until 08:00 Europe/Berlin.
+  T06 and T10 are active; Cursor T08, Codex T09a and post-renewal Claude T07 queued.
+  Heavy CI remains paused; new sanitizer workflow will be manual-only.

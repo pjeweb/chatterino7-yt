@@ -1,7 +1,7 @@
 # Agent coordination
 
-> Before resuming T01–T04, read [CODEX-HANDOFF.md](CODEX-HANDOFF.md).
-> Codex is continuing in isolated branches; reconcile its PRs before merging duplicate work.
+> Overnight ownership and live state: read [NIGHT.md](NIGHT.md) first.
+> The old Claude supervisor is retired; workers use assigned isolated checkouts.
 
 This directory lets a supervisor agent and several worker agents keep working
 on chatterino7-yt across sessions and context resets. Everything an agent
@@ -51,6 +51,10 @@ tooling, smaller diff against upstream.
 
 ## Supervisor loop
 
+Only the overnight controller’s designated supervisor may integrate changes until
+08:00 Europe/Berlin on 2026-10-12. Other sessions yield that role and use assigned
+worker checkouts. Read NIGHT.md before resuming any previous session.
+
 > **Heavy CI is paused at the user's request (2026-10-12).** Disabled with
 > `gh workflow disable` (no file changes): Build, Build FreeBSD, Test
 > Ubuntu/Arch/MacOS/Windows, clang-tidy (+ review poster), Create installer,
@@ -88,8 +92,8 @@ On every check-in (timer, finished worker, or a fresh context):
 
 ## Worker rules
 
-- Work only in your own worktree and branch. Never touch the main worktree,
-  except for writing `.agents/reports/T##.md` there (absolute path).
+- Work only in your assigned worktree and branch. Reports are committed in your
+  own `.agents/reports/`; never write the main worktree or shared task board.
 - Don't push, don't open PRs, don't edit `.agents/TASKS.md`.
 - Keep the diff small. New code goes in new files and directories; edits to
   upstream files are small hooks with a `chatterino7-yt:` comment when the
@@ -99,8 +103,7 @@ On every check-in (timer, finished worker, or a fresh context):
   `scripts/fork/check-network-hosts.py` when URLs changed; run
   `npx prettier@3.8.1 --write <files>` on changed Markdown/YAML (CI's Lint job
   fails otherwise).
-- Commit with conventional-commit messages (`feat:`, `fix:`, `ci:`, `docs:`,
-  `test:`, `chore:`) and end each message with a
-  `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>` trailer.
+- Commit with conventional messages (`feat:`, `fix:`, `ci:`, `docs:`, `test:`,
+  `chore:`). Use truthful attribution; never add another provider’s coauthor.
 - The report covers: summary, files changed, how it was verified (commands +
   results), anything you decided not to do and why, open questions.
