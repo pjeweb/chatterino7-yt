@@ -29,3 +29,7 @@ Newest at the bottom. One entry per supervisor check-in or decision.
   the implemented privacy defaults as done.
 - T02 → PR #1. Codex found a P2 gap (lines starting with `/*` or `*` skipped
   even when they contain code); sent back to the worker. T03 started.
+- User asked to pause the expensive builds. Disabled the heavy upstream
+  workflows via `gh workflow disable` (no file changes, trivially reversible)
+  and cancelled running builds. The local docker check is now the merge gate;
+  T13 tracks re-enabling before the first release.

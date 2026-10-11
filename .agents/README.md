@@ -48,6 +48,15 @@ tooling, smaller diff against upstream.
 
 ## Supervisor loop
 
+> **Heavy CI is paused at the user's request (2026-10-12).** Disabled with
+> `gh workflow disable` (no file changes): Build, Build FreeBSD, Test
+> Ubuntu/Arch/MacOS/Windows, clang-tidy (+ review poster), Create installer,
+> Publish to WinGet. Still running: Lint, Check formatting, zizmor, Network
+> host gate, CodeQL, Scorecard, REUSE, EventSub python test. Until it's
+> re-enabled, the local `scripts/dev/docker-build.sh check` is the merge gate
+> for C++ changes. Re-enable with `gh workflow enable <file>` before the first
+> release (task T13).
+
 All progress is visible on GitHub (pjeweb/chatterino7-yt): every task is a PR.
 
 On every check-in (timer, finished worker, or a fresh context):
