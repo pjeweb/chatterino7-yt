@@ -73,6 +73,66 @@ TEST_F(NetworkConsentTest, ExistingProfileMigratesWithoutResettingChoices)
     EXPECT_TRUE(networkconsent::allowsOptionalRequests(this->settings()));
 }
 
+// Application::initialize passes allowPrompt = !args.isFramelessEmbed.
+TEST_F(NetworkConsentTest, ExistingProfileEmbedMigratesPreservingEnabledChoices)
+{
+    const bool allowPrompt = false;  // frameless embed
+    this->settings().currentVersion.setValue(QStringLiteral("1.0.0"));
+    this->settings().loadTwitchMessageHistoryOnConnect.setValue(true);
+    this->settings().sendSevenTVActivity.setValue(true);
+    this->settings().sendBTTVActivity.setValue(true);
+
+    ASSERT_FALSE(networkconsent::isCompleted(this->settings()));
+    ASSERT_TRUE(networkconsent::isExistingProfile(this->settings()));
+    ASSERT_FALSE(networkconsent::needsFirstRunPrompt(this->settings()));
+
+    networkconsent::ensureFirstRunDecision(this->settings(), nullptr,
+                                           allowPrompt);
+
+    EXPECT_TRUE(networkconsent::isCompleted(this->settings()));
+    EXPECT_TRUE(networkconsent::allowsOptionalRequests(this->settings()));
+    EXPECT_TRUE(this->settings().loadTwitchMessageHistoryOnConnect);
+    EXPECT_TRUE(this->settings().sendSevenTVActivity);
+    EXPECT_TRUE(this->settings().sendBTTVActivity);
+    EXPECT_FALSE(this->settings().showSubageInUserCard);
+}
+
+// Application::initialize passes allowPrompt = !args.isFramelessEmbed.
+TEST_F(NetworkConsentTest, FreshEmbedLeavesConsentIncompleteWithoutPrompt)
+{
+    const bool allowPrompt = false;  // frameless embed
+    ASSERT_FALSE(networkconsent::isCompleted(this->settings()));
+    ASSERT_FALSE(networkconsent::isExistingProfile(this->settings()));
+    ASSERT_TRUE(networkconsent::needsFirstRunPrompt(this->settings()));
+
+    networkconsent::ensureFirstRunDecision(this->settings(), nullptr,
+                                           allowPrompt);
+
+    EXPECT_FALSE(networkconsent::isCompleted(this->settings()));
+    EXPECT_TRUE(networkconsent::needsFirstRunPrompt(this->settings()));
+    EXPECT_FALSE(networkconsent::allowsOptionalRequests(this->settings()));
+    EXPECT_FALSE(this->settings().loadTwitchMessageHistoryOnConnect);
+    EXPECT_FALSE(this->settings().showSubageInUserCard);
+    EXPECT_FALSE(this->settings().sendSevenTVActivity);
+    EXPECT_FALSE(this->settings().sendBTTVActivity);
+
+    // Optional request sites must stay suppressed (no implicit consent).
+    this->settings().showSubageInUserCard.setValue(true);
+    IvrApi ivr;
+    bool failed = false;
+    bool succeeded = false;
+    ivr.getSubage(
+        QStringLiteral("user"), QStringLiteral("channel"),
+        [&](const IvrSubage &) {
+            succeeded = true;
+        },
+        [&] {
+            failed = true;
+        });
+    EXPECT_TRUE(failed);
+    EXPECT_FALSE(succeeded);
+}
+
 TEST_F(NetworkConsentTest, AcceptEnablesOnlyCheckedChoices)
 {
     networkconsent::Choices choices{

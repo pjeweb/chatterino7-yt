@@ -56,7 +56,8 @@ void declineFirstRun(Settings &settings)
     settings.requestSave();
 }
 
-void ensureFirstRunDecision(Settings &settings, QWidget *parent)
+void ensureFirstRunDecision(Settings &settings, QWidget *parent,
+                            bool allowPrompt)
 {
     if (isCompleted(settings))
     {
@@ -65,11 +66,17 @@ void ensureFirstRunDecision(Settings &settings, QWidget *parent)
 
     // Upgrade path: prior GUI launches wrote currentVersion. Preserve whatever
     // the user already saved for optional services; do not show a dialog with
-    // unchecked boxes that looks like a new default.
+    // unchecked boxes that looks like a new default. Runs for GUI and embed.
     if (isExistingProfile(settings))
     {
         settings.networkConsentCompleted.setValue(true);
         settings.requestSave();
+        return;
+    }
+
+    // Fresh frameless embed: no modal UI and no implicit opt-in.
+    if (!allowPrompt)
+    {
         return;
     }
 

@@ -60,10 +60,14 @@ previews are not offered here.
 
 **Existing profiles** (non-empty `currentVersion` from a prior GUI launch) skip
 the dialog: the marker is set once without changing saved service toggles.
-Optional request sites also require `networkConsentCompleted`, so a fresh
-profile cannot send those requests before the first-run decision. Settings →
-“Review optional network services…” reopens the dialog with current values;
-cancel there leaves settings unchanged.
+This migration also runs in frameless embed mode so previously enabled
+optional services stay available. A **fresh** frameless embed shows no dialog
+and does not set the marker, so optional requests stay gated until consent is
+completed another way (e.g. a normal GUI launch). Optional request sites also
+require `networkConsentCompleted`, so a fresh profile cannot send those
+requests before the first-run decision. Settings → “Review optional network
+services…” reopens the dialog with current values; cancel there leaves
+settings unchanged.
 
 ## Limits
 

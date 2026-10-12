@@ -224,11 +224,11 @@ void Application::initialize(Settings &settings, const Paths &paths)
 
     // chatterino7-yt: first-run optional-network consent before currentVersion
     // is overwritten and before Twitch connect / channel joins can fire
-    // optional third-party requests.
-    if (!this->args_.isFramelessEmbed)
-    {
-        networkconsent::ensureFirstRunDecision(settings, nullptr);
-    }
+    // optional third-party requests. Existing profiles migrate in embed mode;
+    // only the fresh first-run modal is suppressed for frameless embeds.
+    networkconsent::ensureFirstRunDecision(
+        settings, nullptr,
+        /*allowPrompt=*/!this->args_.isFramelessEmbed);
 
     // Show changelog
     if (!this->args_.isFramelessEmbed &&

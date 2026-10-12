@@ -47,7 +47,12 @@ void declineFirstRun(Settings &settings);
 /// Migrate existing profiles (preserve saved service choices) or show the
 /// first-run dialog for a fresh profile. Call once at startup before
 /// `currentVersion` is updated and before Twitch connect.
-void ensureFirstRunDecision(Settings &settings, QWidget *parent);
+///
+/// When `allowPrompt` is false (frameless embed), existing profiles still
+/// migrate; a fresh profile is left incomplete with no dialog and no
+/// implicit consent. Application passes `!args.isFramelessEmbed`.
+void ensureFirstRunDecision(Settings &settings, QWidget *parent,
+                            bool allowPrompt = true);
 
 /// Re-open the dialog from settings; cancel leaves settings unchanged.
 void showRevisitDialog(Settings &settings, QWidget *parent);
