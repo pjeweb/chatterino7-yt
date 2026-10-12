@@ -143,3 +143,18 @@ P2 still requires T12r correction and rereview. T12r running, no committed
 progress yet; original checkout/evidence preserved. T3 list also failed 401,
 so PRs #12/#13 remain draft and unvalidated. Supervisor build/reviewer exited;
 only T12r worker build may remain. No further dispatch this bounded cycle.
+
+## 2026-10-12 03:19 — T12 correction reviewed
+
+T12r `fa3006df5` fixes existing-profile embed migration and adds two regression
+tests. Ordinary fast-forward published it to existing draft PR #13; original
+local T12 `75fcc1386` and T12r evidence unchanged. Full merge-base scope/no
+gitlinks, clean merge-tree, docs/format/whitespace, host gate and 17 Python
+tests pass. Worker build log verifies compiled changed sources, both new
+tests and 693/693 passing with no failed attempts, exit 0. Fresh independent
+Codex review in new isolated reviews/T12r context exits 0 with no actionable
+regressions. Prior independent original-head 691-test proof remains separate;
+no redundant supervisor rebuild. Corrected-head enabled CI still running.
+T3 retries for #12/#13 remain 401; no merge, validation or auth changes.
+No new dispatch while these drafts await registration; T07 natural 04:51
+renewal remains queued. No platform/live-modal proof invented.
