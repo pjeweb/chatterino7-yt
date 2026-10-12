@@ -8,6 +8,7 @@
 #include "providers/bttv/BttvBadges.hpp"
 #include "providers/bttv/BttvLiveUpdates.hpp"
 #include "providers/bttv/liveupdates/BttvLiveUpdateMessages.hpp"
+#include "singletons/NetworkConsent.hpp"
 #include "singletons/Settings.hpp"
 
 #include <QJsonDocument>
@@ -105,7 +106,8 @@ void BttvLiveUpdateClient::broadcastMe(const QString &channelID,
                                        const QString &userID)
 {
     // chatterino7-yt: also gate queued/replayed presence after consent changes
-    if (!getSettings()->sendBTTVActivity || userID.isEmpty())
+    if (!networkconsent::allowsOptionalRequests(*getSettings()) ||
+        !getSettings()->sendBTTVActivity || userID.isEmpty())
     {
         return;
     }

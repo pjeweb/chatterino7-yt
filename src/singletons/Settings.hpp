@@ -818,6 +818,11 @@ public:
     QStringSetting currentVersion = {"/misc/currentVersion", ""};
     IntSetting overlayKnowledgeLevel = {"/misc/overlayKnowledgeLevel", 0};
 
+    // chatterino7-yt: first-run network consent finished (accept or cancel),
+    // or migrated for an existing profile that already had currentVersion set.
+    BoolSetting networkConsentCompleted = {"/misc/networkConsentCompleted",
+                                           false};
+
     // chatterino7-yt: off by default, this sends joined channels to a third party
     BoolSetting loadTwitchMessageHistoryOnConnect = {
         "/misc/twitch/loadMessageHistoryOnConnect", false};

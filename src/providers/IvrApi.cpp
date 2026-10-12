@@ -6,6 +6,7 @@
 
 #include "common/network/NetworkResult.hpp"
 #include "common/QLogging.hpp"
+#include "singletons/NetworkConsent.hpp"
 #include "singletons/Settings.hpp"
 
 #include <QUrlQuery>
@@ -21,7 +22,8 @@ void IvrApi::getSubage(QString userName, QString channelName,
     assert(!userName.isEmpty() && !channelName.isEmpty());
 
     // chatterino7-yt: api.ivr.fi is a third party, so sub age is opt-in
-    if (!getSettings()->showSubageInUserCard)
+    if (!networkconsent::allowsOptionalRequests(*getSettings()) ||
+        !getSettings()->showSubageInUserCard)
     {
         failureCallback();
         return;

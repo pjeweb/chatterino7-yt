@@ -24,6 +24,7 @@
 #include "providers/seventv/SeventvEventAPI.hpp"
 #include "providers/twitch/api/Helix.hpp"
 #include "providers/twitch/TwitchIrcServer.hpp"
+#include "singletons/NetworkConsent.hpp"
 #include "singletons/Settings.hpp"
 #include "util/BoostJsonWrap.hpp"
 #include "util/FormatTime.hpp"
@@ -735,7 +736,8 @@ void KickChannel::updateSevenTVActivity()
         return;
     }
 
-    if (!getSettings()->enableSevenTVEventAPI ||
+    if (!networkconsent::allowsOptionalRequests(*getSettings()) ||
+        !getSettings()->enableSevenTVEventAPI ||
         !getSettings()->sendSevenTVActivity)
     {
         return;
@@ -971,7 +973,8 @@ void KickChannel::loadChannelHistory()
             }
 
             // Just use the Twitch setting here.
-            if (getSettings()->loadTwitchMessageHistoryOnConnect)
+            if (networkconsent::allowsOptionalRequests(*getSettings()) &&
+                getSettings()->loadTwitchMessageHistoryOnConnect)
             {
                 self->fillInMissingMessages(messages);
             }

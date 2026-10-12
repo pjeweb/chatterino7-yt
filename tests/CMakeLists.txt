@@ -38,6 +38,7 @@ set(test_SOURCES
     ${CMAKE_CURRENT_LIST_DIR}/src/XDGHelper.cpp
     ${CMAKE_CURRENT_LIST_DIR}/src/XDGDirectory.cpp
     ${CMAKE_CURRENT_LIST_DIR}/src/Paths.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/src/NetworkConsent.cpp
     ${CMAKE_CURRENT_LIST_DIR}/src/Selection.cpp
     ${CMAKE_CURRENT_LIST_DIR}/src/TabHistory.cpp
     ${CMAKE_CURRENT_LIST_DIR}/src/NotebookTab.cpp
