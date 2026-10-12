@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="/">
     <file>001-mimeapps.list</file>
+    <file>youtube/events.json</file>
   </qresource>
 </RCC>

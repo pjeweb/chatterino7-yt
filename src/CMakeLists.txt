@@ -570,6 +570,11 @@ set(SOURCE_FILES
         providers/twitch/api/Helix.cpp
         providers/twitch/api/Helix.hpp
 
+        providers/youtube/YouTubeEvent.cpp
+        providers/youtube/YouTubeEvent.hpp
+        providers/youtube/YouTubeMessageBuilder.cpp
+        providers/youtube/YouTubeMessageBuilder.hpp
+
         singletons/CrashHandler.cpp
         singletons/CrashHandler.hpp
         singletons/FileLogger.cpp
