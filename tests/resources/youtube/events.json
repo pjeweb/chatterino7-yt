@@ -1,0 +1,222 @@
+[
+  {
+    "kind": "youtube#liveChatMessage",
+    "id": "event-0",
+    "snippet": {
+      "type": "textMessageEvent",
+      "liveChatId": "chat-fixture",
+      "publishedAt": "2026-10-01T12:00:00.123Z",
+      "authorChannelId": "author-fixture",
+      "textMessageDetails": {
+        "messageText": "Hello 🌍 😀"
+      }
+    },
+    "authorDetails": {
+      "channelId": "author-fixture",
+      "displayName": "Example Viewer",
+      "isChatOwner": true,
+      "isChatModerator": false,
+      "isChatSponsor": true
+    }
+  },
+  {
+    "kind": "youtube#liveChatMessage",
+    "id": "event-1",
+    "snippet": {
+      "type": "superChatEvent",
+      "liveChatId": "chat-fixture",
+      "publishedAt": "2026-10-01T12:00:00.123Z",
+      "superChatDetails": {
+        "amountMicros": "18446744073709551615",
+        "currency": "USD",
+        "amountDisplayString": "$5.00",
+        "userComment": "Thanks!"
+      }
+    }
+  },
+  {
+    "kind": "youtube#liveChatMessage",
+    "id": "event-2",
+    "snippet": {
+      "type": "superStickerEvent",
+      "liveChatId": "chat-fixture",
+      "publishedAt": "2026-10-01T12:00:00.123Z",
+      "superStickerDetails": {
+        "amountMicros": "2000000",
+        "currency": "USD",
+        "amountDisplayString": "$2.00",
+        "superStickerMetadata": {
+          "stickerId": "fixture-sticker",
+          "altText": "Waving hello",
+          "language": "en"
+        }
+      }
+    }
+  },
+  {
+    "kind": "youtube#liveChatMessage",
+    "id": "event-3",
+    "snippet": {
+      "type": "newSponsorEvent",
+      "liveChatId": "chat-fixture",
+      "publishedAt": "2026-10-01T12:00:00.123Z",
+      "newSponsorDetails": {
+        "memberLevelName": "Example level",
+        "isUpgrade": true
+      }
+    }
+  },
+  {
+    "kind": "youtube#liveChatMessage",
+    "id": "event-4",
+    "snippet": {
+      "type": "memberMilestoneChatEvent",
+      "liveChatId": "chat-fixture",
+      "publishedAt": "2026-10-01T12:00:00.123Z",
+      "memberMilestoneChatDetails": {
+        "memberMonth": 12,
+        "memberLevelName": "Example level",
+        "userComment": "One year!"
+      }
+    }
+  },
+  {
+    "kind": "youtube#liveChatMessage",
+    "id": "event-5",
+    "snippet": {
+      "type": "membershipGiftingEvent",
+      "liveChatId": "chat-fixture",
+      "publishedAt": "2026-10-01T12:00:00.123Z",
+      "membershipGiftingDetails": {
+        "giftMembershipsCount": 5,
+        "giftMembershipsLevelName": "Example level"
+      }
+    }
+  },
+  {
+    "kind": "youtube#liveChatMessage",
+    "id": "event-6",
+    "snippet": {
+      "type": "giftMembershipReceivedEvent",
+      "liveChatId": "chat-fixture",
+      "publishedAt": "2026-10-01T12:00:00.123Z",
+      "giftMembershipReceivedDetails": {
+        "memberLevelName": "Example level",
+        "gifterChannelId": "gifter-fixture",
+        "associatedMembershipGiftingMessageId": "event-5"
+      }
+    }
+  },
+  {
+    "kind": "youtube#liveChatMessage",
+    "id": "event-7",
+    "snippet": {
+      "type": "tombstone",
+      "liveChatId": "chat-fixture",
+      "publishedAt": "2026-10-01T12:00:00.123Z"
+    }
+  },
+  {
+    "kind": "youtube#liveChatMessage",
+    "id": "event-8",
+    "snippet": {
+      "type": "userBannedEvent",
+      "liveChatId": "chat-fixture",
+      "publishedAt": "2026-10-01T12:00:00.123Z",
+      "authorChannelId": "moderator-fixture",
+      "userBannedDetails": {
+        "bannedUserDetails": {
+          "channelId": "target-fixture",
+          "displayName": "Example target"
+        },
+        "banType": "temporary",
+        "banDurationSeconds": "300"
+      }
+    }
+  },
+  {
+    "kind": "youtube#liveChatMessage",
+    "id": "event-9",
+    "snippet": {
+      "type": "userBannedEvent",
+      "liveChatId": "chat-fixture",
+      "publishedAt": "2026-10-01T12:00:00.123Z",
+      "userBannedDetails": {
+        "bannedUserDetails": {
+          "channelId": "target-fixture"
+        },
+        "banType": "permanent"
+      }
+    }
+  },
+  {
+    "kind": "youtube#liveChatMessage",
+    "id": "event-10",
+    "snippet": {
+      "type": "pollEvent",
+      "liveChatId": "chat-fixture",
+      "publishedAt": "2026-10-01T12:00:00.123Z",
+      "displayMessage": "Example poll"
+    }
+  },
+  {
+    "kind": "youtube#liveChatMessage",
+    "id": "event-11",
+    "snippet": {
+      "type": "giftEvent",
+      "liveChatId": "chat-fixture",
+      "publishedAt": "2026-10-01T12:00:00.123Z",
+      "displayMessage": "Example Jewel gift"
+    }
+  },
+  {
+    "kind": "youtube#liveChatMessage",
+    "id": "event-12",
+    "snippet": {
+      "type": "futureEvent",
+      "liveChatId": "chat-fixture",
+      "publishedAt": "2026-10-01T12:00:00.123Z"
+    }
+  },
+  {
+    "kind": "youtube#liveChatMessage",
+    "id": "event-13",
+    "snippet": {
+      "type": "chatEndedEvent",
+      "liveChatId": "chat-fixture",
+      "publishedAt": "2026-10-01T12:00:00.123Z"
+    }
+  },
+  {
+    "kind": "youtube#liveChatMessage",
+    "id": "event-14",
+    "snippet": {
+      "type": "textMessageEvent",
+      "liveChatId": "chat-fixture",
+      "publishedAt": "2026-10-01T12:00:00.123Z",
+      "textMessageDetails": {
+        "messageText": false
+      }
+    }
+  },
+  {},
+  null,
+  42,
+  {
+    "id": false,
+    "snippet": [],
+    "authorDetails": {
+      "isChatOwner": "true"
+    }
+  },
+  {
+    "snippet": {
+      "type": "userBannedEvent",
+      "publishedAt": "invalid",
+      "userBannedDetails": {
+        "banType": "temporary",
+        "banDurationSeconds": -1
+      }
+    }
+  }
+]
