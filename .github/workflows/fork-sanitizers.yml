@@ -1,0 +1,46 @@
+name: Sanitizers (manual)
+
+# Heavy CI remains paused. Add PR/push triggers only when T13 is authorized.
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: fork-sanitizers-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: ASan and UBSan
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    permissions:
+      contents: read
+    env:
+      C7YT_JOBS: "4"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          submodules: recursive
+          persist-credentials: false
+
+      # Dockerfile pins the official Ubuntu 26.04 image by SHA256 digest and
+      # verifies both downloaded local test-server archives against SHA256.
+      - name: Build the pinned development container
+        run: docker build --pull --tag c7yt-dev:latest scripts/dev
+
+      - name: Test the instrumentation guard
+        run: python3 -m unittest discover -s scripts/dev -p 'test_check_sanitizers.py' -v
+
+      - name: Build instrumented libraries and run tests
+        run: scripts/dev/docker-build.sh asan
+
+      - name: Preserve test diagnostics
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: sanitizer-test-logs
+          path: build-asan/Testing/Temporary/
+          if-no-files-found: warn
+          retention-days: 7

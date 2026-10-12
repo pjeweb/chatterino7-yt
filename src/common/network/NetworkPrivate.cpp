@@ -55,6 +55,10 @@ void loadUncached(std::shared_ptr<NetworkData> &&data)
 
     worker->moveToThread(NetworkManager::workerThread);
 
+    // chatterino7-yt: pending requests must release callbacks at worker shutdown
+    QObject::connect(NetworkManager::workerThread, &QThread::finished, worker,
+                     &QObject::deleteLater);
+
     QObject::connect(&requester, &NetworkRequester::requestUrl, worker,
                      &NetworkTask::run);
 

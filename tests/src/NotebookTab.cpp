@@ -16,6 +16,7 @@
 
 #include <QApplication>
 #include <QDebug>
+#include <QPointer>
 #include <QString>
 #include <QWheelEvent>
 
@@ -98,6 +99,20 @@ protected:
 };
 
 }  // namespace
+
+TEST(NotebookTab, WindowManagerOwnsSaveTimer)
+{
+    mock::BaseApplication app;
+    QPointer<QTimer> timer;
+    {
+        WindowManager manager(app.args_, app.paths_, app.settings, app.theme,
+                              app.fonts);
+        const auto timers = manager.findChildren<QTimer *>();
+        ASSERT_EQ(timers.size(), 1);
+        timer = timers.front();
+    }
+    EXPECT_TRUE(timer.isNull());
+}
 
 /// The highlight state must settable
 TEST_F(NotebookTabFixture, SetHighlightState)

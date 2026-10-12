@@ -68,6 +68,9 @@ Channel::Channel(const QString &name, Type type)
 
 Channel::~Channel()
 {
+    // chatterino7-yt: this unparented model belongs to the channel, not completers
+    delete this->completionModel;
+
     auto *app = tryGetApp();
     if (app && !isAppAboutToQuit() && this->anythingLogged_)
     {

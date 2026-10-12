@@ -11,6 +11,7 @@
 #include "controllers/completion/TabCompletionModel.hpp"
 #include "controllers/hotkeys/HotkeyController.hpp"
 #include "controllers/plugins/PluginController.hpp"
+#include "controllers/spellcheck/SpellChecker.hpp"
 #include "mocks/BaseApplication.hpp"
 #include "mocks/Channel.hpp"
 #include "mocks/EmoteController.hpp"
@@ -31,12 +32,26 @@
 #include <QApplication>
 #include <QCompleter>
 #include <QDebug>
+#include <QPointer>
 #include <QString>
 
 #include <tuple>
 
 using namespace chatterino;
 using ::testing::Exactly;
+
+TEST(ResizingTextEdit, OwnsCompleter)
+{
+    mock::BaseApplication app;
+    QPointer<QCompleter> completer;
+    {
+        ResizingTextEdit edit;
+        completer = new QCompleter(QStringList{"one", "two"});
+        edit.setCompleter(completer);
+        EXPECT_EQ(completer->parent(), &edit);
+    }
+    EXPECT_TRUE(completer.isNull());
+}
 
 namespace {
 
@@ -97,9 +112,15 @@ public:
         return &this->seventv;
     }
 
+    SpellChecker *getSpellChecker() override
+    {
+        return &this->spellChecker;
+    }
+
     BttvEmotes bttv;
     FfzEmotes ffz;
     SeventvEmotes seventv;
+    SpellChecker spellChecker;
 
 #ifdef CHATTERINO_HAVE_PLUGINS
     PluginController *getPlugins() override

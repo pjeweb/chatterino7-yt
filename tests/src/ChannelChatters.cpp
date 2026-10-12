@@ -10,6 +10,7 @@
 #include "Test.hpp"
 
 #include <QColor>
+#include <QPointer>
 #include <QStringList>
 
 using namespace chatterino;
@@ -31,6 +32,18 @@ public:
 };
 
 }  // namespace
+
+TEST(ChannelChatters, ChannelOwnsCompletionModel)
+{
+    MockApplication app;
+    QPointer<TabCompletionModel> model;
+    {
+        MockChannel channel("test");
+        model = channel.completionModel;
+        ASSERT_FALSE(model.isNull());
+    }
+    EXPECT_TRUE(model.isNull());
+}
 
 // Ensure inserting the same user does not increase the size of the stored colors
 TEST(ChannelChatters, insertSameUser)

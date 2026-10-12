@@ -271,6 +271,9 @@ void ResizingTextEdit::setCompleter(QCompleter *c)
         return;
     }
 
+    // chatterino7-yt: own completers so popups cannot outlive the text widget
+    this->completer_->setParent(this);
+
     this->completer_->setWidget(this);
     this->completer_->setCompletionMode(QCompleter::InlineCompletion);
     this->completer_->setCaseSensitivity(Qt::CaseInsensitive);

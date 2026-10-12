@@ -197,7 +197,7 @@ WindowManager::WindowManager(const Args &appArgs_, const Paths &paths,
     this->repaintVisibleChatWidgetsListener.add(
         this->themes.repaintVisibleChatWidgets_);
 
-    this->saveTimer = new QTimer;
+    this->saveTimer = new QTimer(this);
 
     this->saveTimer->setSingleShot(true);
 
