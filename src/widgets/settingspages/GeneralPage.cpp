@@ -16,6 +16,7 @@
 #include "singletons/CrashHandler.hpp"
 #include "singletons/Fonts.hpp"
 #include "singletons/NativeMessaging.hpp"
+#include "singletons/NetworkConsent.hpp"
 #include "singletons/Paths.hpp"
 #include "singletons/Settings.hpp"
 #include "singletons/Theme.hpp"
@@ -1647,6 +1648,10 @@ void GeneralPage::initLayout(GeneralPageView &layout)
             "you participate in.\nThis means reply threads you participate in "
             "will use your \"Subscribed Reply Threads\" highlight settings.")
         ->addTo(layout);
+
+    layout.addButton("Review optional network services…", [this] {
+        networkconsent::showRevisitDialog(*getSettings(), this);
+    });
 
     SettingWidget::checkbox("Load message history on connect",
                             s.loadTwitchMessageHistoryOnConnect)

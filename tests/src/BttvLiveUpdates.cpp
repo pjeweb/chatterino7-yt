@@ -103,6 +103,8 @@ private:
 TEST(BttvLiveUpdates, ActivityConsent)
 {
     mock::BaseApplication app;
+    // chatterino7-yt: optional presence also requires completed first-run consent
+    app.settings.networkConsentCompleted = true;
     ASSERT_FALSE(app.settings.sendBTTVActivity);
     const auto restoreConsent = qScopeGuard([&] {
         app.settings.sendBTTVActivity = false;
@@ -166,6 +168,8 @@ class BttvLiveUpdatesEvents : public ::testing::TestWithParam<bool>
 TEST_P(BttvLiveUpdatesEvents, AllEvents)
 {
     mock::BaseApplication app;
+    // chatterino7-yt: optional presence also requires completed first-run consent
+    app.settings.networkConsentCompleted = true;
     ASSERT_FALSE(app.settings.sendBTTVActivity);
     app.settings.sendBTTVActivity = GetParam();
     const auto restoreConsent = qScopeGuard([&] {

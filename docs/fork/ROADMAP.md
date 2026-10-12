@@ -36,7 +36,8 @@ Non-goals: platforms beyond Twitch and YouTube; emote providers beyond
       endpoints still incomplete)
 - [x] Opt-in defaults: BTTV/7TV activity, recent-messages, IVR off; updater
       compiled out (`CHATTERINO_UPDATER=OFF`) — see FEATURES.md
-- [ ] "Network services" settings page plus a first-run consent screen
+- [x] First-run network consent dialog (optional services only; revisit entry
+      in General settings). Full dedicated "Network services" page still open.
 - [x] CI host gate (`scripts/fork/check-network-hosts.py` +
       `fork-network-hosts.yml`)
 

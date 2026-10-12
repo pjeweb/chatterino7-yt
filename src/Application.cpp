@@ -57,6 +57,7 @@
 #include "singletons/Fonts.hpp"
 #include "singletons/helper/LoggingChannel.hpp"
 #include "singletons/Logging.hpp"
+#include "singletons/NetworkConsent.hpp"
 #include "singletons/Paths.hpp"
 #include "singletons/Settings.hpp"
 #include "singletons/StreamerMode.hpp"
@@ -220,6 +221,14 @@ Application::~Application()
 void Application::initialize(Settings &settings, const Paths &paths)
 {
     assert(!this->initialized);
+
+    // chatterino7-yt: first-run optional-network consent before currentVersion
+    // is overwritten and before Twitch connect / channel joins can fire
+    // optional third-party requests.
+    if (!this->args_.isFramelessEmbed)
+    {
+        networkconsent::ensureFirstRunDecision(settings, nullptr);
+    }
 
     // Show changelog
     if (!this->args_.isFramelessEmbed &&

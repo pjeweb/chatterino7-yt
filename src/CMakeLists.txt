@@ -591,6 +591,8 @@ set(SOURCE_FILES
         singletons/Paths.hpp
         singletons/Resources.cpp
         singletons/Resources.hpp
+        singletons/NetworkConsent.cpp
+        singletons/NetworkConsent.hpp
         singletons/Settings.cpp
         singletons/Settings.hpp
         singletons/StreamerMode.cpp
@@ -789,6 +791,8 @@ set(SOURCE_FILES
         widgets/dialogs/LastRunCrashDialog.hpp
         widgets/dialogs/LoginDialog.cpp
         widgets/dialogs/LoginDialog.hpp
+        widgets/dialogs/NetworkConsentDialog.cpp
+        widgets/dialogs/NetworkConsentDialog.hpp
         widgets/dialogs/QualityPopup.cpp
         widgets/dialogs/QualityPopup.hpp
         widgets/dialogs/ReplyThreadPopup.cpp

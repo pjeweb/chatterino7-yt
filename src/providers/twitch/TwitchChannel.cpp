@@ -40,6 +40,7 @@
 #include "providers/twitch/TwitchAccount.hpp"
 #include "providers/twitch/TwitchIrcServer.hpp"
 #include "providers/twitch/TwitchUsers.hpp"
+#include "singletons/NetworkConsent.hpp"
 #include "singletons/Settings.hpp"
 #include "singletons/WindowManager.hpp"
 #include "util/FormatTime.hpp"
@@ -1472,7 +1473,8 @@ void TwitchChannel::markDisconnected()
 
 void TwitchChannel::loadRecentMessages()
 {
-    if (!getSettings()->loadTwitchMessageHistoryOnConnect)
+    if (!networkconsent::allowsOptionalRequests(*getSettings()) ||
+        !getSettings()->loadTwitchMessageHistoryOnConnect)
     {
         return;
     }
@@ -1527,7 +1529,8 @@ void TwitchChannel::loadRecentMessages()
 
 void TwitchChannel::loadRecentMessagesReconnect()
 {
-    if (!getSettings()->loadTwitchMessageHistoryOnConnect)
+    if (!networkconsent::allowsOptionalRequests(*getSettings()) ||
+        !getSettings()->loadTwitchMessageHistoryOnConnect)
     {
         return;
     }
@@ -2481,7 +2484,8 @@ void TwitchChannel::updateSevenTVActivity()
         return;
     }
 
-    if (!getSettings()->enableSevenTVEventAPI ||
+    if (!networkconsent::allowsOptionalRequests(*getSettings()) ||
+        !getSettings()->enableSevenTVEventAPI ||
         !getSettings()->sendSevenTVActivity)
     {
         return;
