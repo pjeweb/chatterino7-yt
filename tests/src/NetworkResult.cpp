@@ -54,9 +54,9 @@ TEST(NetworkResult, Errors)
 
 TEST(NetworkResult, InvalidError)
 {
-    checkResult({static_cast<Error>(1000000), {}, {}},
-                static_cast<Error>(1000000), std::nullopt,
-                "unknown error (1000000)");
-    checkResult({static_cast<Error>(-1), 42, {}}, static_cast<Error>(-1), 42,
-                "unknown error (status: 42, error: -1)");
+    // Unnamed values within the enum's range cover the fallback without UB.
+    checkResult({static_cast<Error>(50), {}, {}}, static_cast<Error>(50),
+                std::nullopt, "unknown error (50)");
+    checkResult({static_cast<Error>(51), 42, {}}, static_cast<Error>(51), 42,
+                "unknown error (status: 42, error: 51)");
 }

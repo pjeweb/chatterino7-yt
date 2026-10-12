@@ -56,13 +56,6 @@ set(CHATTERINO_EXTRA_BUILD_STRING "" CACHE STRING "Provide an extra string to sh
 
 set(USE_ALTERNATE_LINKER "" CACHE STRING "Use alternate linker. Leave empty for system default. CMake 3.29 users can use CMAKE_LINKER_TYPE instead.")
 
-if(CHATTERINO_SANITIZER_SUPPORT)
-    list(APPEND CMAKE_MODULE_PATH
-        "${CMAKE_SOURCE_DIR}/cmake/sanitizers-cmake/cmake"
-    )
-    find_package(Sanitizers REQUIRED)
-endif()
-
 if(BUILD_TESTS)
     list(APPEND VCPKG_MANIFEST_FEATURES "tests")
 endif()
@@ -76,6 +69,14 @@ project(chatterino
     DESCRIPTION "Chat client for twitch.tv"
     HOMEPAGE_URL "https://chatterino.com/"
 )
+
+# chatterino7-yt: sanitizer flag detection needs the enabled compiler languages
+if(CHATTERINO_SANITIZER_SUPPORT)
+    list(APPEND CMAKE_MODULE_PATH
+        "${CMAKE_SOURCE_DIR}/cmake/sanitizers-cmake/cmake"
+    )
+    find_package(Sanitizers REQUIRED)
+endif()
 
 if(CHATTERINO_GENERATE_COVERAGE)
     if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
@@ -306,6 +307,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 include(cmake/resources/generate_resources.cmake)
 
 add_subdirectory(src)
+
+# chatterino7-yt: instrument implementation libraries, not just executable shells
+if(CHATTERINO_SANITIZER_SUPPORT)
+    add_sanitizers(chatterino-lib twitch-eventsub-ws)
+endif()
 
 if(BUILD_TESTS OR BUILD_BENCHMARKS)
     add_subdirectory(mocks)

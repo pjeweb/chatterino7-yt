@@ -11,6 +11,7 @@
 #include "util/QMagicEnum.hpp"
 
 #include <QCoreApplication>
+#include <QScopeGuard>
 
 using namespace chatterino;
 
@@ -45,6 +46,26 @@ QHttpMultiPart *makeMultipart()
 }
 
 }  // namespace
+
+TEST(NetworkRequest, PendingRequestReleasedOnShutdown)
+{
+    auto captured = std::make_shared<int>(1);
+    const std::weak_ptr<int> observer = captured;
+    NetworkRequest(getDelayURL(10))
+        .onSuccess([captured](const NetworkResult &) {})
+        .execute();
+    captured.reset();
+
+    // Process the queued request before shutting down while it is still pending.
+    QMetaObject::invokeMethod(
+        NetworkManager::accessManager, [] {}, Qt::BlockingQueuedConnection);
+    ASSERT_FALSE(observer.expired());
+    NetworkManager::deinit();
+    const auto restartNetwork = qScopeGuard([] {
+        NetworkManager::init();
+    });
+    EXPECT_TRUE(observer.expired());
+}
 
 TEST(NetworkRequest, Success)
 {

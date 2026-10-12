@@ -67,6 +67,11 @@ void NetworkTask::run()
         return;
     }
 
+    // chatterino7-yt: the access manager can destroy replies before pending tasks
+    QObject::connect(this->reply_, &QObject::destroyed, this, [this] {
+        this->reply_ = nullptr;
+    });
+
     const auto &timeout = this->data_->timeout;
     if (timeout.has_value())
     {
