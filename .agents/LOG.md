@@ -133,3 +133,13 @@ T09b PR #12 exact reviewed HEAD unchanged, all enabled CI green. T3 registration
 retry for #12 and immediate link for #13 both failed HTTP 401; both drafts
 remain unmerged, no controller validation and no credential changes. Claude
 T07 still waits for natural 04:51 renewal; no broader dispatch or heavy CI.
+
+## 2026-10-12 03:14 — T12 independent build checkpoint
+
+Clean exact-head T12 review build exited 0 with 691/691 tests, no failed
+attempts, 20.06 seconds test time; UI library compiled. All enabled CI is
+green at unchanged PR #13 HEAD `75fcc1386`. Independent-review embed migration
+P2 still requires T12r correction and rereview. T12r running, no committed
+progress yet; original checkout/evidence preserved. T3 list also failed 401,
+so PRs #12/#13 remain draft and unvalidated. Supervisor build/reviewer exited;
+only T12r worker build may remain. No further dispatch this bounded cycle.
