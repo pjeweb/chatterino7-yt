@@ -1,30 +1,24 @@
 # chatterino7-yt roadmap
 
-chatterino7-yt is a fork of [chatterino7](https://github.com/SevenTV/chatterino7)
-with three goals:
+Fork of [chatterino7](https://github.com/SevenTV/chatterino7) with three goals:
 
-1. **Privacy first.** No analytics, no heartbeats. Every third-party service is
-   either required for chat to work or opt-in.
-2. **Verifiable builds.** Every release is built by public CI from a tagged
-   commit, with build provenance attestations and an SBOM.
-3. **YouTube live chat.** Uses only the official YouTube Data API v3,
-   including the moderation actions it allows.
+1. **Privacy first.** No analytics. Third-party hosts are required for chat or
+   opt-in — see [`NETWORK.md`](NETWORK.md) and [`FEATURES.md`](FEATURES.md).
+2. **Verifiable builds.** Public CI from tagged commits, provenance + SBOM
+   _(release pipeline not landed yet)_.
+3. **YouTube live chat** via official Data API v3 only _(design in
+   [`youtube.md`](youtube.md); no provider code yet)_.
 
-Non-goals: platforms other than Twitch and YouTube, emote providers beyond 7TV,
-BTTV and FFZ, and anything that needs Twitch's private GQL API or borrowed
-client IDs.
+Non-goals: platforms beyond Twitch and YouTube; emote providers beyond
+7TV/BTTV/FFZ; Twitch private GQL or borrowed client IDs.
 
 ## Principles
 
-- **Small diff against upstream.** New features live in their own directories
-  (`src/providers/youtube`, `src/providers/translation`, `docs/fork`, ...). Edits
-  to upstream files are kept to small hooks so upstream merges stay cheap.
-- **Official APIs only.** Twitch features go through Helix and EventSub; YouTube
-  features go through the Data API v3. No scraping, no private endpoints.
-- **Nothing phones home by default.** A feature that contacts a new host has to
-  be listed in [`NETWORK.md`](NETWORK.md) and is off until the user turns it on.
-- **Automate it or it rots.** Dependency bumps, upstream syncs, releases and
-  publishing all run from CI.
+- **Small upstream diff.** New work under `src/providers/{youtube,translation}`,
+  `docs/fork`, plus tiny hooks elsewhere.
+- **Official APIs only.** Twitch Helix/EventSub; YouTube Data API v3. No scraping.
+- **Document every new host** in `NETWORK.md` (enforced for fork diffs by CI).
+- **Automate or it rots.** Sync, checks, and (later) releases from CI.
 
 ## Phases
 
@@ -32,69 +26,60 @@ client IDs.
 
 - [x] GitHub fork of SevenTV/chatterino7 with full history
 - [x] Reproducible local build (`scripts/dev/docker-build.sh`)
-- [ ] Scheduled upstream-sync workflow that opens a PR when chatterino7 moves
+- [x] Scheduled upstream-sync workflow (needs `SYNC_TOKEN` for workflow pushes)
 - [x] Coexistence identity: app name, app ID, settings directory (icons still
-      shared pixels; no full visual rebrand) so the fork can install next to
-      Chatterino/chatterino7
+      shared pixels; no full visual rebrand)
 
 ### 1. Privacy
 
-- [ ] Inventory every outbound host in [`NETWORK.md`](NETWORK.md)
-- [ ] Opt-in defaults for activity-revealing services: BTTV activity,
-      7TV presences, recent-messages history, and the update check
+- [ ] Complete host inventory in [`NETWORK.md`](NETWORK.md) (Kick/private
+      endpoints still incomplete)
+- [x] Opt-in defaults: BTTV/7TV activity, recent-messages, IVR off; updater
+      compiled out (`CHATTERINO_UPDATER=OFF`) — see FEATURES.md
 - [ ] "Network services" settings page plus a first-run consent screen
-- [ ] CI check that fails when a new hostname appears in `src/` without a
-      `NETWORK.md` entry
+- [x] CI host gate (`scripts/fork/check-network-hosts.py` +
+      `fork-network-hosts.yml`)
 
 ### 2. CI/CD and supply chain
 
+Landed so far: fork workflows for zizmor, CodeQL, Scorecard, network hosts,
+upstream sync. Heavy build/test matrices remain **manually paused** — see
+[`CI.md`](CI.md). Still open:
+
 - [ ] Build matrix for Windows, macOS (universal) and Linux on every PR
-- [ ] Renovate for submodules, GitHub Actions (pinned to SHAs), conan and vcpkg
-- [ ] CodeQL (C++), clang-tidy, clang-format, zizmor (workflow linting),
-      OpenSSF Scorecard
+- [ ] Renovate for submodules, Actions (SHA-pinned), conan and vcpkg
+- [ ] clang-tidy, clang-format gate, OpenSSF Scorecard (Scorecard workflow
+      exists; broader lint matrix incomplete)
 - [ ] Tests under ASan/UBSan on Linux
-- [ ] release-please for versioning and changelogs (conventional commits)
-- [ ] Releases: `actions/attest-build-provenance`, SBOM (SPDX), SHA256SUMS
-- [ ] Signing: SignPath Foundation (Windows), Flathub (Linux); macOS ad-hoc
-      until an Apple Developer ID is available
+- [ ] release-please for versioning and changelogs
+- [ ] Releases: provenance, SPDX SBOM, SHA256SUMS
+- [ ] Signing: SignPath (Windows), Flathub (Linux); macOS ad-hoc until a
+      Developer ID exists — **not claimed done**
 - [ ] Automated publishing to Flathub, winget and a Homebrew tap
 
-### 3. YouTube live chat (official API)
+### 3. YouTube live chat (official API) — design only
 
-- [ ] `YouTubeChannel` / `YouTubeChatServer` provider, modelled on upstream's
-      Kick provider
-- [ ] Credentials: user-supplied Google Cloud OAuth client (desktop app,
-      loopback redirect, PKCE), tokens stored in the system keychain
-- [ ] Find live videos via the channel's RSS feed + `videos.list`
-      (`liveStreamingDetails.activeLiveChatId`)
-- [ ] Read chat via `liveChatMessages.streamList`, falling back to
-      `liveChatMessages.list` polling
-- [ ] Render text, emoji, Super Chats, Super Stickers, memberships and
-      membership gifts; member, moderator and owner badges
-- [ ] Send messages (`liveChatMessages.insert`)
-- [ ] Moderation: delete (`liveChatMessages.delete`), timeout and ban
-      (`liveChatBans.insert`), unban (`liveChatBans.delete`), add and remove
-      moderators (`liveChatModerators.*`, owner only)
-- [ ] Quota meter in the UI (10,000 units per day per Google Cloud project)
+See [`youtube.md`](youtube.md). No `src/providers/youtube` yet.
 
-### 4. Translation (incoming messages)
+- [ ] Provider modules (`YouTubeChannel` / `YouTubeChatServer`, …)
+- [ ] User-supplied Google OAuth client; tokens in system keychain
+- [ ] Live discovery (Atom + `videos.list`) and chat read/send/moderate
+- [ ] Quota meter (10,000 units/day per Google Cloud project)
 
-- [ ] On-device translation with Bergamot; language-pair models downloaded
-      on demand, with their checksums verified
-- [ ] Optional providers with the user's own key: DeepL, self-hosted
-      LibreTranslate
-- [ ] Per-channel and per-language rules; the original text is always viewable
+### 4. Translation — design only
 
-### 5. Updates
+See [`translation.md`](translation.md). No provider code yet.
 
-- [ ] macOS: Sparkle 2 with an EdDSA-signed appcast
-- [ ] Windows: WinSparkle with the same appcast and EdDSA signatures
-- [ ] Linux: updates through Flathub (and package managers)
-- [ ] Update check is opt-in and makes no request until enabled
+- [ ] On-device Bergamot; optional user-key DeepL / self-hosted LibreTranslate
+- [ ] Per-channel/language rules; original text always viewable
+
+### 5. Updates — not implemented
+
+- [ ] Sparkle 2 / WinSparkle with EdDSA-signed appcast; Flathub on Linux
+- [ ] Opt-in update check (today: compiled out, not replaced)
 
 ### 6. Twitch moderation via Helix (optional)
 
-Features that the official API supports but upstream doesn't have yet:
-polls and predictions (broadcaster), unban requests, blocked terms,
-AutoMod settings, stream title and category (broadcaster), and the
-channel-point redemption queue (broadcaster, own rewards only).
+Official-API features upstream lacks: polls/predictions, unban requests,
+blocked terms, AutoMod settings, stream title/category, channel-point
+redemption queue (broadcaster, own rewards only).
