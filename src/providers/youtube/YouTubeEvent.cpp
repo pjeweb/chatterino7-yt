@@ -4,6 +4,7 @@
 
 #include "providers/youtube/YouTubeEvent.hpp"
 
+#include <QJsonDocument>
 #include <QJsonObject>
 #include <QRegularExpression>
 
@@ -184,5 +185,9 @@ Event parseEvent(const QJsonValue &resource)
         e.text = fallback;
     }
     return e;
+}
+Event parseEventJson(const QByteArray &json)
+{
+    return parseEvent(QJsonDocument::fromJson(json).object());
 }
 }  // namespace chatterino::youtube

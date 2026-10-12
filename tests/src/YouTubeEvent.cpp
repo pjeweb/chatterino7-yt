@@ -148,3 +148,23 @@ TEST(YouTubeEvent, InvalidNumbersAndDisplayFallback)
     EXPECT_EQ(e.text, "Fallback text");
     EXPECT_FALSE(e.author.member);
 }
+
+TEST(YouTubeEvent, JsonDecodingBoundary)
+{
+    for (const auto &json :
+         {QByteArray("{broken"), QByteArray("[]"), QByteArray("null"),
+          QByteArray("42"), QByteArray()})
+    {
+        auto event = parseEventJson(json);
+        EXPECT_EQ(event.kind, EventKind::Unknown);
+        EXPECT_EQ(event.text, "Unsupported YouTube chat event");
+        EXPECT_TRUE(event.targetMessageId.isEmpty());
+        EXPECT_TRUE(event.targetChannelId.isEmpty());
+    }
+    auto event = parseEventJson(
+        R"({"id":"decoded-id","snippet":{"type":"textMessageEvent","hasDisplayContent":false,"textMessageDetails":{"messageText":"decoded text"}}})");
+    EXPECT_EQ(event.messageId, "decoded-id");
+    EXPECT_EQ(event.text, "decoded text");
+    EXPECT_EQ(event.hasDisplayContent, false);
+    EXPECT_FALSE(event.author.owner);
+}

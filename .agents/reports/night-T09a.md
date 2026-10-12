@@ -46,11 +46,12 @@ Role hints never grant permissions. No billing/reset/fallbacks/workers.
 
 ## Validation checkpoint
 
-Five suite tests added: `YouTubeEvent.TextIdentityRolesAndRenderer`,
+Six suite tests added: `YouTubeEvent.TextIdentityRolesAndRenderer`,
 `PaidAndMembership`, `ModerationAndEnded`, `UnknownMissingAndMalformed`,
-`InvalidNumbersAndDisplayFallback`. They assert normalized values and rendered
+`InvalidNumbersAndDisplayFallback`, and `JsonDecodingBoundary`. They assert normalized values and rendered
 TextElement words, IDs, frozen output, role unknown/false/true, malformed numbers,
-unknown/incomplete/wrong-shape records, notices, and Unicode.
+unknown/incomplete/wrong-shape records, syntactically invalid JSON and non-object
+documents, notices, and Unicode.
 
 Initial requested build stopped because assigned worktree submodules were empty.
 Populated this checkout from pinned local submodule Git archives, reading the

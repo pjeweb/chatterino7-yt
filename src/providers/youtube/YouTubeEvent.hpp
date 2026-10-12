@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include <QByteArray>
 #include <QDateTime>
 #include <QJsonValue>
 #include <QString>
@@ -62,5 +63,8 @@ struct Event {
 
 // One resource, not a list envelope. Wrong shapes produce a safe unknown notice.
 Event parseEvent(const QJsonValue &resource);
+
+// Invalid JSON and non-object documents use the same unknown notice.
+Event parseEventJson(const QByteArray &json);
 
 }  // namespace chatterino::youtube
