@@ -178,3 +178,18 @@ Codex lane is the sole running supervisor. PRs #12/#13 reviewed HEADs remain
 unchanged with all enabled CI green; registration links/list still return401.
 Drafts retained, no merge/validation or auth changes. No new dispatch/review/
 build; T11 waits for reviewed T07 integration.
+
+## 2026-10-12 05:12 — T07 reviewed draft
+
+Published T07 `39aeee65b` as draft PR #14, immediately attempted T3 registration
+(401). Manual-only workflow consumes existing successful same-tag Build
+artifacts; no upstream build.yml/gitlinks changed, clean merge-tree. Full
+diff/report reviewed; fresh independent Codex review exits 0 with no
+actionable defects. Supervisor verifies 35 tests on host/container (3.14.4),
+format/whitespace, actionlint and offline zizmor; pinned action behavior and
+Build artifact names checked. Unsupported zizmor --online flag rejected;
+no online audit or runner Python3.12 proof claimed. Live workflow, fork
+platform assets and release/signing untested; partial SBOMs and collector
+provenance gap explicitly documented. Enabled CI pending, draft retained,
+no validation. T11 waits for T07 merge; no new dispatch while registration
+blocks reviewed proposals. Original worker evidence preserved.
