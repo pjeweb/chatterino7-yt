@@ -105,3 +105,16 @@ reports 682/682 tests passed, zero failed, 120.40 seconds at `68cf2820b`; no
 ASan/LeakSanitizer/runtime-error diagnostics found. The associated Docker
 container and build process exited. Source changes since that commit are only
 supervisor metadata. T12 and T09b have started under controller ownership.
+
+## 2026-10-12 02:55 — T09b reviewed draft; registration blocker
+
+Published T09b docs-only `75d16917a` as draft PR #12. Full three-dot diff has
+only its report, secure-storage/OAuth plan and a link; no gitlinks. Clean
+merge-tree against main; independent Codex review in new isolated checkout
+completed without actionable findings. Supervisor source/local-link checks,
+Prettier/whitespace and primary Google/QtKeychain claims verified; no build,
+store, platform or live-login proof claimed. Enabled CI still running.
+Immediate T3 link failed HTTP 401 Unauthorized, so draft remains unmerged and
+controller validation is withheld. No authentication/global configuration
+changes or alternate credentials attempted. T12 is running without new local
+commits; T07 remains queued for natural 04:51 renewal. No new dispatch needed.
