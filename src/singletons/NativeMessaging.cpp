@@ -310,8 +310,8 @@ void registerNmHost(Modes modes, const Paths &paths)
 
 std::string &getNmQueueName(const Paths &paths)
 {
-    static std::string name =
-        "chatterino_gui" + paths.applicationFilePathHash.toStdString();
+    static std::string name = std::string(fork::NATIVE_MESSAGE_QUEUE_NAME) +
+                              paths.applicationFilePathHash.toStdString();
     return name;
 }
 
@@ -321,7 +321,7 @@ namespace nm::client {
 
 void sendMessage(const QByteArray &array)
 {
-    ipc::sendMessage("chatterino_gui", array);
+    ipc::sendMessage(fork::NATIVE_MESSAGE_QUEUE_NAME, array);
 }
 
 void writeToCout(const QByteArray &array)
@@ -347,7 +347,7 @@ NativeMessagingServer::NativeMessagingServer()
 
 NativeMessagingServer::~NativeMessagingServer()
 {
-    if (!ipc::IpcQueue::remove("chatterino_gui"))
+    if (!ipc::IpcQueue::remove(fork::NATIVE_MESSAGE_QUEUE_NAME))
     {
         qCWarning(chatterinoNativeMessage) << "Failed to remove message queue";
     }
@@ -379,8 +379,8 @@ NativeMessagingServer::ReceiverThread::ReceiverThread(
 
 void NativeMessagingServer::ReceiverThread::run()
 {
-    auto [messageQueue, error] =
-        ipc::IpcQueue::tryReplaceOrCreate("chatterino_gui", 100, MESSAGE_SIZE);
+    auto [messageQueue, error] = ipc::IpcQueue::tryReplaceOrCreate(
+        fork::NATIVE_MESSAGE_QUEUE_NAME, 100, MESSAGE_SIZE);
 
     if (!error.isEmpty())
     {

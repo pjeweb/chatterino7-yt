@@ -4,13 +4,22 @@
 
 #include "singletons/NativeMessaging.hpp"
 
+#include "common/ForkIdentity.hpp"
 #include "Test.hpp"
 #include "util/CombinePath.hpp"
+#include "util/IpcQueue.hpp"
 
 #include <QDir>
 #include <QJsonDocument>
+#include <QScopeGuard>
 #include <QStandardPaths>
 #include <QTemporaryDir>
+#include <QUuid>
+
+#ifdef Q_OS_LINUX
+#    define BOOST_INTERPROCESS_SHARED_DIR_FUNC
+#    include <boost/interprocess/ipc/message_queue.hpp>
+#endif
 
 using namespace chatterino;
 
@@ -28,6 +37,57 @@ protected:
 
     QDir dir;
 };
+
+#ifdef Q_OS_LINUX
+TEST(NativeMessaging, ForkQueuePreservesUpstreamQueue)
+{
+    // Unique names exercise real POSIX shared memory without touching live apps.
+    const auto prefix =
+        QUuid::createUuid().toString(QUuid::Id128).toStdString();
+    const auto upstreamName = prefix + "_chatterino_gui";
+    const auto forkName = prefix + "_" + fork::NATIVE_MESSAGE_QUEUE_NAME;
+    ASSERT_NE(upstreamName, forkName);
+    const auto cleanup = qScopeGuard([&] {
+        ipc::IpcQueue::remove(upstreamName.c_str());
+        ipc::IpcQueue::remove(forkName.c_str());
+    });
+
+    auto [upstreamQueue, upstreamError] =
+        ipc::IpcQueue::tryReplaceOrCreate(upstreamName.c_str(), 4, 128);
+    ASSERT_TRUE(upstreamError.isEmpty()) << upstreamError.toStdString();
+    ASSERT_NE(upstreamQueue, nullptr);
+    ipc::sendMessage(upstreamName.c_str(), "upstream-before");
+    {
+        auto [forkQueue, forkError] =
+            ipc::IpcQueue::tryReplaceOrCreate(forkName.c_str(), 4, 128);
+        ASSERT_TRUE(forkError.isEmpty()) << forkError.toStdString();
+        ASSERT_NE(forkQueue, nullptr);
+        ipc::sendMessage(forkName.c_str(), "fork");
+        boost::interprocess::message_queue reader(
+            boost::interprocess::open_only, forkName.c_str());
+        char buffer[128];
+        size_t size = 0;
+        unsigned int priority = 0;
+        ASSERT_TRUE(reader.try_receive(buffer, sizeof(buffer), size, priority));
+        EXPECT_EQ(QByteArray(buffer, static_cast<qsizetype>(size)), "fork");
+    }
+    ASSERT_TRUE(ipc::IpcQueue::remove(forkName.c_str()));
+
+    // Removing the fork queue must leave upstream reachable by its name.
+    boost::interprocess::message_queue reader(boost::interprocess::open_only,
+                                              upstreamName.c_str());
+    char buffer[128];
+    size_t size = 0;
+    unsigned int priority = 0;
+    ASSERT_TRUE(reader.try_receive(buffer, sizeof(buffer), size, priority));
+    EXPECT_EQ(QByteArray(buffer, static_cast<qsizetype>(size)),
+              "upstream-before");
+    ipc::sendMessage(upstreamName.c_str(), "upstream-after");
+    ASSERT_TRUE(reader.try_receive(buffer, sizeof(buffer), size, priority));
+    EXPECT_EQ(QByteArray(buffer, static_cast<qsizetype>(size)),
+              "upstream-after");
+}
+#endif
 
 TEST_F(NativeMessagingFixture, writeManifestToSubDirCreated)
 {
