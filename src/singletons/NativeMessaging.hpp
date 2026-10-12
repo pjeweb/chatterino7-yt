@@ -11,6 +11,7 @@
 #include <QThread>
 
 #include <optional>
+#include <string>
 #include <vector>
 
 namespace chatterino::nm::detail {
@@ -46,6 +47,7 @@ Atomic<std::optional<QString>> &nmIpcError();
 namespace nm::client {
 
 void sendMessage(const QByteArray &array);
+void sendMessage(const QByteArray &array, const char *queueName);
 void writeToCout(const QByteArray &array);
 
 }  // namespace nm::client
@@ -54,6 +56,8 @@ class NativeMessagingServer final
 {
 public:
     NativeMessagingServer();
+    /// Explicit namespace for isolated transports and tests.
+    explicit NativeMessagingServer(std::string queueName);
     NativeMessagingServer(const NativeMessagingServer &) = delete;
     NativeMessagingServer(NativeMessagingServer &&) = delete;
     NativeMessagingServer &operator=(const NativeMessagingServer &) = delete;
@@ -81,6 +85,7 @@ private:
 
     void syncChannels(const QJsonArray &twitchChannels);
 
+    const std::string queueName_;
     ReceiverThread *thread;
 
     /// This vector contains all channels that are open the user's browser.

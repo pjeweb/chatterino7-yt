@@ -28,6 +28,7 @@
 #include <QStringBuilder>
 
 #include <iostream>
+#include <utility>
 
 #ifdef Q_OS_WIN
 #    include "widgets/AttachedWindow.hpp"
@@ -310,8 +311,8 @@ void registerNmHost(Modes modes, const Paths &paths)
 
 std::string &getNmQueueName(const Paths &paths)
 {
-    static std::string name =
-        "chatterino_gui" + paths.applicationFilePathHash.toStdString();
+    static std::string name = std::string(fork::NATIVE_MESSAGE_QUEUE_NAME) +
+                              paths.applicationFilePathHash.toStdString();
     return name;
 }
 
@@ -321,7 +322,12 @@ namespace nm::client {
 
 void sendMessage(const QByteArray &array)
 {
-    ipc::sendMessage("chatterino_gui", array);
+    sendMessage(array, fork::NATIVE_MESSAGE_QUEUE_NAME);
+}
+
+void sendMessage(const QByteArray &array, const char *queueName)
+{
+    ipc::sendMessage(queueName, array);
 }
 
 void writeToCout(const QByteArray &array)
@@ -340,18 +346,22 @@ void writeToCout(const QByteArray &array)
 
 // SERVER
 NativeMessagingServer::NativeMessagingServer()
-    : thread(new ReceiverThread(*this))
+    : NativeMessagingServer(fork::NATIVE_MESSAGE_QUEUE_NAME)
+{
+}
+
+NativeMessagingServer::NativeMessagingServer(std::string queueName)
+    : queueName_(std::move(queueName))
+    , thread(new ReceiverThread(*this))
 {
     this->thread->setObjectName("C2NMReceiver");
 }
 
 NativeMessagingServer::~NativeMessagingServer()
 {
-    if (!ipc::IpcQueue::remove("chatterino_gui"))
-    {
-        qCWarning(chatterinoNativeMessage) << "Failed to remove message queue";
-    }
     this->thread->requestInterruption();
+    // Wake the blocking receive so normal shutdown can release its queue/thread.
+    nm::client::sendMessage({}, this->queueName_.c_str());
     this->thread->quit();
     // Most likely, the receiver thread will still wait for a message
     if (!this->thread->wait(100))
@@ -362,7 +372,13 @@ NativeMessagingServer::~NativeMessagingServer()
         {
             qCWarning(chatterinoNativeMessage)
                 << "Failed to terminate thread cleanly";
+            return;
         }
+    }
+    delete this->thread;
+    if (!ipc::IpcQueue::remove(this->queueName_.c_str()))
+    {
+        qCWarning(chatterinoNativeMessage) << "Failed to remove message queue";
     }
 }
 
@@ -379,8 +395,8 @@ NativeMessagingServer::ReceiverThread::ReceiverThread(
 
 void NativeMessagingServer::ReceiverThread::run()
 {
-    auto [messageQueue, error] =
-        ipc::IpcQueue::tryReplaceOrCreate("chatterino_gui", 100, MESSAGE_SIZE);
+    auto [messageQueue, error] = ipc::IpcQueue::tryReplaceOrCreate(
+        this->parent_.queueName_.c_str(), 100, MESSAGE_SIZE);
 
     if (!error.isEmpty())
     {

@@ -18,6 +18,8 @@ inline constexpr char EXECUTABLE_NAME[] = "chatterino7-yt";
 /// and native-messaging host name).
 inline constexpr char DESKTOP_FILE_ID[] = "com.chatterino7yt.chatterino7yt";
 inline constexpr char MACOS_BUNDLE_ID[] = "app.chatterino7yt.chatterino7yt";
+/// IPC transport must also be distinct from upstream's native browser host.
+inline constexpr char NATIVE_MESSAGE_QUEUE_NAME[] = "chatterino7yt_gui";
 
 #ifdef Q_OS_WIN
 inline constexpr wchar_t APP_USER_MODEL_ID[] = L"Chatterino7YT.Chatterino7YT";
