@@ -39,6 +39,9 @@ channel owner, video and chat IDs; none is a display name.
 
 ## Accounts and setup
 
+T09b prerequisite review: [secure storage and Desktop OAuth plan](youtube-auth.md).
+This checkpoint implements no authentication; the implementation slice below remains deferred.
+
 Google documents Desktop authorization with system-browser login, loopback
 redirect and PKCE. Bind `127.0.0.1` on an ephemeral port before opening the
 browser; generate a fresh verifier and `S256` challenge plus random `state`.
