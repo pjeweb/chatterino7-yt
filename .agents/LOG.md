@@ -158,3 +158,13 @@ no redundant supervisor rebuild. Corrected-head enabled CI still running.
 T3 retries for #12/#13 remain 401; no merge, validation or auth changes.
 No new dispatch while these drafts await registration; T07 natural 04:51
 renewal remains queued. No platform/live-modal proof invented.
+
+## 2026-10-12 03:36 — reviewed drafts await registration
+
+PR #12 `75d16917a` and corrected PR #13 `fa3006df5` remain unchanged, independently
+reviewed, and now have all enabled CI green. Both read-only merge-tree checks
+against current main are clean; worker evidence remains unchanged. T3 link
+attempts and list still return HTTP 401 Unauthorized. Preserve drafts and
+withhold merge/controller validation; no authentication or account changes.
+No new commits, workers, reviewers or builds to process. Existing queue stays
+bounded; Claude T07 remains pending natural 04:51 renewal.
