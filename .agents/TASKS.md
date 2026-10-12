@@ -3,23 +3,24 @@
 Status: `todo` → `active` (worker running) → `review` → `merged` | `dropped`.
 Only the supervisor edits this file. Task specs are the contract for workers.
 
-| ID   | Title                                                   | Status | Build? | Depends         | Branch                    |
-| ---- | ------------------------------------------------------- | ------ | ------ | --------------- | ------------------------- |
-| T00  | Foundation: dev build, privacy defaults, fork workflows | merged | yes    | –               | –                         |
-| T01  | CI hygiene: zizmor + fork-safe upstream workflows       | merged | no     | T00             | PR #3                     |
-| T02  | Network host gate (script + tests + workflow)           | merged | no     | T00             | PR #2 (also covers #1)    |
-| T03  | Risky-feature review and safe defaults                  | merged | yes    | T00             | PR #5                     |
-| T04  | YouTube design doc (official API)                       | merged | no     | T00             | PR #4                     |
-| T05  | Docs pass: fork README, docs index, diagrams            | merged | no     | T01–T04         |                           |
-| T06  | Sanitizer test job (ASan/UBSan)                         | merged | yes    | T01             | PR #10                    |
-| T07  | Release workflow: provenance, SBOM, checksums           | todo   | no     | T01             |                           |
-| T08  | Coexistence: app name, settings dir, app ID             | merged | yes    | T03             | PR #7                     |
-| T09  | YouTube slices (T09a merged; rest queued)               | active | yes    | T04             |                           |
-| T09b | Secure storage / Desktop OAuth prerequisites (docs)     | review | no     | T09a merged     | PR #12                    |
-| T10  | Translation design doc                                  | merged | no     | T00             | PR #6                     |
-| T11  | Updater design doc (Sparkle/WinSparkle/Flathub)         | todo   | no     | T07             |                           |
-| T12  | First-run network consent screen                        | active | yes    | T03             | night/T12-network-consent |
-| T13  | Re-enable full CI matrix and get it green               | todo   | no     | most of T01–T12 |                           |
+| ID   | Title                                                   | Status | Build? | Depends         | Branch                         |
+| ---- | ------------------------------------------------------- | ------ | ------ | --------------- | ------------------------------ |
+| T00  | Foundation: dev build, privacy defaults, fork workflows | merged | yes    | –               | –                              |
+| T01  | CI hygiene: zizmor + fork-safe upstream workflows       | merged | no     | T00             | PR #3                          |
+| T02  | Network host gate (script + tests + workflow)           | merged | no     | T00             | PR #2 (also covers #1)         |
+| T03  | Risky-feature review and safe defaults                  | merged | yes    | T00             | PR #5                          |
+| T04  | YouTube design doc (official API)                       | merged | no     | T00             | PR #4                          |
+| T05  | Docs pass: fork README, docs index, diagrams            | merged | no     | T01–T04         |                                |
+| T06  | Sanitizer test job (ASan/UBSan)                         | merged | yes    | T01             | PR #10                         |
+| T07  | Release workflow: provenance, SBOM, checksums           | todo   | no     | T01             |                                |
+| T08  | Coexistence: app name, settings dir, app ID             | merged | yes    | T03             | PR #7                          |
+| T09  | YouTube slices (T09a merged; rest queued)               | active | yes    | T04             |                                |
+| T09b | Secure storage / Desktop OAuth prerequisites (docs)     | review | no     | T09a merged     | PR #12                         |
+| T10  | Translation design doc                                  | merged | no     | T00             | PR #6                          |
+| T11  | Updater design doc (Sparkle/WinSparkle/Flathub)         | todo   | no     | T07             |                                |
+| T12  | First-run network consent screen                        | review | yes    | T03             | PR #13; T12r correction queued |
+| T12r | Embed existing-profile consent migration fix            | active | yes    | T03/T08 merged  | night/T12-embed-consent-review |
+| T13  | Re-enable full CI matrix and get it green               | todo   | no     | most of T01–T12 |                                |
 
 ---
 
@@ -186,3 +187,13 @@ choices off, safe accept/cancel/persistence, preserve existing explicit choices,
 minimal startup hooks and real local C++ proof. Report
 `.agents/reports/night-T12.md`. Both assignments start from `73d76167e`;
 prerequisites are already merged, so configured dependencies are empty.
+
+## T12r review correction
+
+Independent review of T12 found that frameless embeds skip existing-profile
+marker migration and thereby disable saved enabled optional services. Cursor
+owns a new isolated follow-up based on T12 `75fcc1386`: migrate existing
+profiles irrespective of embed mode, suppress only fresh first-run modal UI
+for embeds, and add regression tests using the actual startup decision.
+Report `.agents/reports/night-T12r.md`. Original T12 evidence remains unchanged.
+T12 PR #13 and T09b PR #12 remain draft because T3 registration returns HTTP 401.

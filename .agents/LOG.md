@@ -118,3 +118,18 @@ Immediate T3 link failed HTTP 401 Unauthorized, so draft remains unmerged and
 controller validation is withheld. No authentication/global configuration
 changes or alternate credentials attempted. T12 is running without new local
 commits; T07 remains queued for natural 04:51 renewal. No new dispatch needed.
+
+## 2026-10-12 03:07 — T12 reviewed; isolated embed correction
+
+Published committed T12 `75fcc1386` as draft PR #13; scope has no gitlinks or
+unrelated pins. Clean merge-tree, format/whitespace, network gate and 17 Python
+tests pass; worker log verifies 691 tests and exit 0. Supervisor clean build at
+exact HEAD is in progress in new reviews/T12 checkout. Independent Codex review
+found P2: frameless embed guard skips existing-profile migration, disabling
+saved optional services via the new marker gates. Queued narrow Cursor T12r
+in new checkout/branch from that HEAD with regression tests; original evidence
+untouched, immutable assignment appended atomically. Review posted to PR #13.
+T09b PR #12 exact reviewed HEAD unchanged, all enabled CI green. T3 registration
+retry for #12 and immediate link for #13 both failed HTTP 401; both drafts
+remain unmerged, no controller validation and no credential changes. Claude
+T07 still waits for natural 04:51 renewal; no broader dispatch or heavy CI.
