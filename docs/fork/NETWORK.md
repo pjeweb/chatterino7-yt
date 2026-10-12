@@ -1,13 +1,14 @@
 # Network services
 
-Every host the app talks to, why, and whether it is on by default. If you
-add a new host to `src/`, add it here as well, in backticks.
-`scripts/fork/check-network-hosts.py` enforces this in CI for URLs added
-since upstream. Hosts must match exactly (a subdomain is not covered by its
-parent); comment-only lines and loopback addresses are ignored.
+Every host the app talks to, why, and whether it is on by default. New hosts
+in `src/` must appear here in backticks.
+`scripts/fork/check-network-hosts.py` enforces this in CI for URLs added since
+upstream. Hosts match exactly (a subdomain is not covered by its parent);
+comment-only lines and loopback addresses are ignored.
 
-"Upstream default" is chatterino7's default; "Fork default" is ours. Rows
-marked _planned_ are not implemented yet.
+"Upstream default" is chatterino7's; "Fork default" is ours. Rows marked
+_planned_ are **not implemented**. Feature switches and evidence live in
+[`FEATURES.md`](FEATURES.md); goals in [`ROADMAP.md`](ROADMAP.md).
 
 ## Required for chat
 
@@ -35,25 +36,20 @@ marked _planned_ are not implemented yet.
 
 ## Optional services
 
-| Host                                               | Purpose                                                       | Upstream default       | Fork default                                                   |
-| -------------------------------------------------- | ------------------------------------------------------------- | ---------------------- | -------------------------------------------------------------- |
-| `recent-messages.robotty.de`                       | Chat history when you join a channel (sends the channel name) | on                     | **off** (first-run prompt _planned_)                           |
-| `braize.pajlada.com`                               | Link previews (sends every link you hover over)               | off                    | off                                                            |
-| `api.pronouns.alejo.io`                            | Pronouns on user cards                                        | off                    | off                                                            |
-| `api.ivr.fi`                                       | Sub age shown on user cards (sends the user and channel)      | on (when a card opens) | **off**                                                        |
-| Image uploader (user-configured)                   | Pasting images into chat                                      | off                    | off                                                            |
-| `7tv.io/v3/chatterino/version`                     | Update check                                                  | on                     | **compiled out** (signed Sparkle/WinSparkle updater _planned_) |
-| Translation provider (user-configured) _(planned)_ | Message translation via DeepL/LibreTranslate                  | n/a                    | off (on-device by default)                                     |
+| Host                                               | Purpose                                                       | Upstream default       | Fork default                                  |
+| -------------------------------------------------- | ------------------------------------------------------------- | ---------------------- | --------------------------------------------- |
+| `recent-messages.robotty.de`                       | Chat history when you join a channel (sends the channel name) | on                     | **off** (first-run prompt _planned_)          |
+| `braize.pajlada.com`                               | Link previews (sends every link you hover over)               | off                    | off                                           |
+| `api.pronouns.alejo.io`                            | Pronouns on user cards                                        | off                    | off                                           |
+| `api.ivr.fi`                                       | Sub age shown on user cards (sends the user and channel)      | on (when a card opens) | **off**                                       |
+| Image uploader (user-configured)                   | Pasting images into chat                                      | off                    | off                                           |
+| `7tv.io/v3/chatterino/version`                     | Update check                                                  | on                     | **compiled out** (`CHATTERINO_UPDATER=OFF`)   |
+| Translation provider (user-configured) _(planned)_ | DeepL / LibreTranslate; on-device Bergamot needs model hosts  | n/a                    | off until implemented; hosts TBD in this file |
 
-## Privacy policy and current limits
+## Limits
 
-No analytics or telemetry should be added. Optional BTTV/7TV presence reports
-are off by default; transport keepalives for active chat/WebSocket connections
-still run. Crashpad currently has no upload URL configured and defaults off
-in CMake; local crash recovery/dumps remain (see `LastRunCrashDialog`). Build
-workflows can override CMake defaults; see [feature review](FEATURES.md).
-
-This inventory is incomplete for inherited Kick support, which still uses
-private web endpoints and has no off switch. Hiding/gating that provider and
-reviewing fork OAuth ownership remain follow-up work; the roadmap describes
-the intended policy rather than a complete audit of upstream code.
+No analytics or telemetry should be added. Transport keepalives for active
+chat/WebSocket connections still run. Crashpad has no upload URL and defaults
+off in CMake. Inherited Kick support still uses private web endpoints and has
+**no off switch** — not removed; hide/gate is follow-up. Inventory is not a
+full audit of every upstream string.

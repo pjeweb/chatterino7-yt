@@ -1,3 +1,24 @@
+# chatterino7-yt
+
+Fork of [SevenTV/chatterino7](https://github.com/SevenTV/chatterino7) aimed at
+**privacy-first defaults**, **verifiable public builds**, and **YouTube live
+chat via the official Data API v3** (design only so far). It keeps a distinct
+app identity (`chatterino7-yt`) so it can install beside Chatterino /
+chatterino7 without sharing settings.
+
+| Today (in tree)                                             | Not implemented                                              |
+| ----------------------------------------------------------- | ------------------------------------------------------------ |
+| Twitch chat; 7TV/BTTV/FFZ emotes                            | YouTube provider                                             |
+| Presence, recent-messages, IVR opt-in; updater compiled out | Translation; signed Sparkle/WinSparkle updater               |
+| Fork CI gates (hosts, zizmor, …); coexistence packaging     | Kick removed/gated; release signing / cross-platform release |
+
+Docs: [docs/fork](docs/fork/) · MIT; inherits Chatterino 2 / chatterino7
+attribution below.
+
+---
+
+<!-- upstream chatterino7 README (keep merges easy; do not reformat) -->
+
 ![chatterinoLogo](https://user-images.githubusercontent.com/41973452/272541622-52457e89-5f16-4c83-93e7-91866c25b606.png)
 Chatterino7 [![GitHub Actions Build (Windows, Ubuntu, MacOS)](https://github.com/seventv/chatterino7/actions/workflows/build.yml/badge.svg?branch=chatterino7)](https://github.com/SevenTV/chatterino7/actions?query=workflow%3ABuild+branch%3Achatterino7) [![Chocolatey Package](https://img.shields.io/chocolatey/v/chatterino7?include_prereleases)](https://chocolatey.org/packages/chatterino7)
 ============
