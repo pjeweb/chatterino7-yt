@@ -3,22 +3,23 @@
 Status: `todo` → `active` (worker running) → `review` → `merged` | `dropped`.
 Only the supervisor edits this file. Task specs are the contract for workers.
 
-| ID  | Title                                                   | Status | Build? | Depends         | Branch                 |
-| --- | ------------------------------------------------------- | ------ | ------ | --------------- | ---------------------- |
-| T00 | Foundation: dev build, privacy defaults, fork workflows | merged | yes    | –               | –                      |
-| T01 | CI hygiene: zizmor + fork-safe upstream workflows       | merged | no     | T00             | PR #3                  |
-| T02 | Network host gate (script + tests + workflow)           | merged | no     | T00             | PR #2 (also covers #1) |
-| T03 | Risky-feature review and safe defaults                  | merged | yes    | T00             | PR #5                  |
-| T04 | YouTube design doc (official API)                       | merged | no     | T00             | PR #4                  |
-| T05 | Docs pass: fork README, docs index, diagrams            | merged | no     | T01–T04         |                        |
-| T06 | Sanitizer test job (ASan/UBSan)                         | merged | yes    | T01             | PR #10                 |
-| T07 | Release workflow: provenance, SBOM, checksums           | todo   | no     | T01             |                        |
-| T08 | Coexistence: app name, settings dir, app ID             | merged | yes    | T03             | PR #7                  |
-| T09 | YouTube slices (T09a merged; rest queued)               | active | yes    | T04             |                        |
-| T10 | Translation design doc                                  | merged | no     | T00             | PR #6                  |
-| T11 | Updater design doc (Sparkle/WinSparkle/Flathub)         | todo   | no     | T07             |                        |
-| T12 | First-run network consent screen                        | todo   | yes    | T03             |                        |
-| T13 | Re-enable full CI matrix and get it green               | todo   | no     | most of T01–T12 |                        |
+| ID   | Title                                                   | Status | Build? | Depends         | Branch                         |
+| ---- | ------------------------------------------------------- | ------ | ------ | --------------- | ------------------------------ |
+| T00  | Foundation: dev build, privacy defaults, fork workflows | merged | yes    | –               | –                              |
+| T01  | CI hygiene: zizmor + fork-safe upstream workflows       | merged | no     | T00             | PR #3                          |
+| T02  | Network host gate (script + tests + workflow)           | merged | no     | T00             | PR #2 (also covers #1)         |
+| T03  | Risky-feature review and safe defaults                  | merged | yes    | T00             | PR #5                          |
+| T04  | YouTube design doc (official API)                       | merged | no     | T00             | PR #4                          |
+| T05  | Docs pass: fork README, docs index, diagrams            | merged | no     | T01–T04         |                                |
+| T06  | Sanitizer test job (ASan/UBSan)                         | merged | yes    | T01             | PR #10                         |
+| T07  | Release workflow: provenance, SBOM, checksums           | todo   | no     | T01             |                                |
+| T08  | Coexistence: app name, settings dir, app ID             | merged | yes    | T03             | PR #7                          |
+| T09  | YouTube slices (T09a merged; rest queued)               | active | yes    | T04             |                                |
+| T09b | Secure storage / Desktop OAuth prerequisites (docs)     | active | no     | T09a merged     | night/T09b-oauth-prerequisites |
+| T10  | Translation design doc                                  | merged | no     | T00             | PR #6                          |
+| T11  | Updater design doc (Sparkle/WinSparkle/Flathub)         | todo   | no     | T07             |                                |
+| T12  | First-run network consent screen                        | active | yes    | T03             | night/T12-network-consent      |
+| T13  | Re-enable full CI matrix and get it green               | todo   | no     | most of T01–T12 |                                |
 
 ---
 
@@ -171,3 +172,17 @@ Heavy upstream workflows were paused with `gh workflow disable` at the
 user's request (see `.agents/README.md`). Before the first release, ask the
 user, then re-enable them (`gh workflow enable <file>`), run them on
 `chatterino7`, and fix anything fork-specific that fails on macOS/Windows.
+
+## T09b prerequisite assignment
+
+Codex owns `night/T09b-oauth-prerequisites`: documentation and source/dependency
+audit only, before secure-store/OAuth implementation. No credentials, keychain
+mutation, live login, dependency changes or C++ builds. Report
+`.agents/reports/night-T09b.md`; acceptance and platform blockers in
+`docs/fork/youtube-auth.md`.
+
+T12 is queued with Cursor in `night/T12-network-consent`: explicit first-run
+choices off, safe accept/cancel/persistence, preserve existing explicit choices,
+minimal startup hooks and real local C++ proof. Report
+`.agents/reports/night-T12.md`. Both assignments start from `73d76167e`;
+prerequisites are already merged, so configured dependencies are empty.
