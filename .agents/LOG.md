@@ -85,7 +85,7 @@ Merged PR10 at6dd64ada2 after independent review and all enabled CI green; libra
 
 PR9 merged2819cb56a after672 Debug tests and676 combined fatal/leak/no-retry ASan+UBSan tests,zero diagnostics,clear rereview and all enabled CI green. PR11 merged68cf2820b after677 tests,corrected ban/detail fallbacks,clear independent rereview and all enabled CI green. YouTube remains offline models/projection with no production auth/network/UI activation. Original T09a/T09ar evidence stays unchanged for controller validation. All foreground model/build reservations are released except one final full-main ASan checkpoint (/tmp/night-main-checkpoint-asan.log),running in reviews/T08ipc-main at68cf2820b. Background supervisor takes exclusive integration ownership on FOREGROUND removal; subscription-only quotas/no resets, original Claude preservation,paused heavy CI and08:00 deadline persist.
 
-## 2026-10-12 02:51 — bounded supervisor dispatch
+## 2026-10-12 02:49 — bounded supervisor dispatch
 
 Clean integration handoff at `73d76167e`; GitHub confirms PRs 1–11 merged,
 controller evidence T08/T08r/T05/T09a/T09ar is validated done. No ready reports
@@ -99,3 +99,9 @@ occupies the other slot; jobs=4. Claude T07 retains natural 04:51 eligibility.
 No releases, credentials, spending changes or paused heavy CI dispatch.
 Use explicit `gh -R pjeweb/chatterino7-yt`: gh's inferred default repository
 was upstream during one read-only query; corrected before any writes.
+
+Full-main checkpoint completed before cycle exit: `/tmp/night-main-checkpoint-asan.log`
+reports 682/682 tests passed, zero failed, 120.40 seconds at `68cf2820b`; no
+ASan/LeakSanitizer/runtime-error diagnostics found. The associated Docker
+container and build process exited. Source changes since that commit are only
+supervisor metadata. T12 and T09b have started under controller ownership.
