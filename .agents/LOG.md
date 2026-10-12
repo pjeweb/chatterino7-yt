@@ -168,3 +168,13 @@ attempts and list still return HTTP 401 Unauthorized. Preserve drafts and
 withhold merge/controller validation; no authentication or account changes.
 No new commits, workers, reviewers or builds to process. Existing queue stays
 bounded; Claude T07 remains pending natural 04:51 renewal.
+
+## 2026-10-12 05:09 — Claude renewal worker active
+
+Controller started assigned Claude T07 after natural 04:51 eligibility. It is
+running with no new local commits at this checkpoint; preserve its session
+and checkout. Claude supervisor lane is waiting, not active; this controller
+Codex lane is the sole running supervisor. PRs #12/#13 reviewed HEADs remain
+unchanged with all enabled CI green; registration links/list still return401.
+Drafts retained, no merge/validation or auth changes. No new dispatch/review/
+build; T11 waits for reviewed T07 integration.
