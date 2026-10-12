@@ -72,3 +72,7 @@ Cursor completed T08 (671 Linux tests reported). Independent Codex review found 
 ## 2026-10-12 — T08 merged after review
 
 Merged PR #7 at d7c6e13cd after corrected packaging paths, independent Codex review with no actionable findings, and all enabled CI green at978739a30. A clean Docker BUILD_APP=ON build passed671/671 tests with no failed attempts; the new chatterino7-yt executable ran --version under network-none and isolated HOME. Windows/macOS packaging remains source-inspected, not executed. T08/T08r worker evidence remains unchanged; downstream clean pending checkouts will advance to main before validation unlocks T09a (Codex offline parsers) and T05 (Cursor docs). Original Claude worktrees and paused heavy CI stay preserved. Native T06 is clearing real lifetime findings without suppressions.
+
+## 2026-10-12 — T05 merged; T06 and IPC review
+
+Merged docs PR8 after independent review, Prettier checks, exact upstream README body identity and all enabled CI green at ea95c1008. Main merge1e6ec840b. T06 published draftPR10 at178be0358:672/672 fatal/leak/no-retry sanitizer tests,672/672 Debug tests,5 guard tests,517 instrumented commands; independent review confirms actual three-dot PR diff/merge preserves T08/T10 with no actionable source findings. Parent draftPR9 isolates the residual native browser queue name and tests actual client/server lifecycle; final committed-source build is pending atd40cf8227, second review is clear. All PRs registered with T3; no heavy workflow dispatch/enablement.
