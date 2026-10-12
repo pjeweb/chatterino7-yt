@@ -37,13 +37,13 @@ commits were included in #2. Local C++ proof is 668 passing tests from T03;
 all 17 network-gate tests pass after reconciliation. The old CODEX-HANDOFF.md
 is the previous pass’s historical record, superseded by this ownership notice.
 
-| Task | Provider | Status / checkout                                                      |
-| ---- | -------- | ---------------------------------------------------------------------- |
-| T06  | Codex    | merged PR #10;672 fatal ASan/UBSan tests +672 Debug tests passed       |
-| T10  | Codex    | merged PR #6; translation design only                                  |
-| T08  | Cursor   | merged PR #7, including isolated packaging corrections T08r            |
-| T09a | Codex    | active after T08 validation, `c7yt-night/T09a`; offline models/parsers |
-| T07  | Claude   | queued after renewal, `c7yt-night/T07`; provenance/release workflow    |
+| Task | Provider       | Status / checkout                                                   |
+| ---- | -------------- | ------------------------------------------------------------------- |
+| T06  | Codex          | merged PR #10;672 fatal ASan/UBSan tests +672 Debug tests passed    |
+| T10  | Codex          | merged PR #6; translation design only                               |
+| T08  | Cursor         | merged PR #7, including isolated packaging corrections T08r         |
+| T09a | Codex / Cursor | merged PR #11, offline models/projection;677 tests + review fixes   |
+| T07  | Claude         | queued after renewal, `c7yt-night/T07`; provenance/release workflow |
 
 Follow-on tasks come from TASKS.md and youtube.md’s six slices. Select small,
 independent work; favor verification and privacy fixes over new features.
@@ -74,3 +74,5 @@ schedules the independent supervisor lane and assigned workers. Logs and
 statuses are in the private runtime `events.jsonl`/`state.json`, not provider
 raw output. T3 PR registration uses the current thread credential; failure
 must be reported and leaves the proposal unmerged.
+
+Foreground handoff: PRs9/11 merged after review and all enabled CI green. Combined core+IPC sanitizer proof is676 passing tests; full merged main checkpoint with the six offline YouTube suites is running separately and will be recorded honestly. Native foreground agents have exited. The durable supervisor becomes the sole integration writer when FOREGROUND is removed.

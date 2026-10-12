@@ -14,7 +14,7 @@ Only the supervisor edits this file. Task specs are the contract for workers.
 | T06 | Sanitizer test job (ASan/UBSan)                         | merged | yes    | T01             | PR #10                 |
 | T07 | Release workflow: provenance, SBOM, checksums           | todo   | no     | T01             |                        |
 | T08 | Coexistence: app name, settings dir, app ID             | merged | yes    | T03             | PR #7                  |
-| T09 | YouTube implementation (slices from T04)                | active | yes    | T04             |                        |
+| T09 | YouTube slices (T09a merged; rest queued)               | active | yes    | T04             |                        |
 | T10 | Translation design doc                                  | merged | no     | T00             | PR #6                  |
 | T11 | Updater design doc (Sparkle/WinSparkle/Flathub)         | todo   | no     | T07             |                        |
 | T12 | First-run network consent screen                        | todo   | yes    | T03             |                        |
