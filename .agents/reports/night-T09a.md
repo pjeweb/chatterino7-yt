@@ -56,5 +56,22 @@ documents, notices, and Unicode.
 Initial requested build stopped because assigned worktree submodules were empty.
 Populated this checkout from pinned local submodule Git archives, reading the
 existing object cache without modifying shared Git configuration or worktrees.
-`C7YT_JOBS=4 scripts/dev/docker-build.sh check` is running; final results follow.
-Formatting uses CI-pinned clang-format 19. Host gate runs after local commit.
+Final checks completed successfully:
+
+- `C7YT_JOBS=4 scripts/dev/docker-build.sh check`: exit 0, **677/677 tests
+  passed**, including all six `YouTubeEvent.*` cases. Public httpbin remains off;
+  script-managed httpbox/pubsub services are local and container-scoped.
+- Repeated that exact command after the final CMake registration ordering change:
+  exit 0, **677/677 passed** again, validating the final configuration.
+- `scripts/check-format.sh` with CI-pinned clang-format **19.1.7** in the build
+  container: exit 0, full formatting check passed. New files also pass
+  `clang-format-19 --dry-run --Werror`.
+- `python3 scripts/fork/check-network-hosts.py`: exit 0 against
+  `upstream/chatterino7` merge base `919a6c1fd2`; no new network hosts.
+- `git diff --check`: passed. No production Google calls or credentials used.
+
+Local commits: `a62eb3e21` (model, fixtures, immutable projection), `303219110`
+(JSON decoding boundary and final CMake ordering), followed by this validation
+report commit. Worktree left clean on the assigned branch; no push/PR/merge,
+other worktree, shared-board or coordinator-file writes. No remaining T09a work;
+production hooks listed above remain intentionally deferred.
