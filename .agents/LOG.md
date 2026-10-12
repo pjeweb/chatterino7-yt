@@ -76,3 +76,7 @@ Merged PR #7 at d7c6e13cd after corrected packaging paths, independent Codex rev
 ## 2026-10-12 — T05 merged; T06 and IPC review
 
 Merged docs PR8 after independent review, Prettier checks, exact upstream README body identity and all enabled CI green at ea95c1008. Main merge1e6ec840b. T06 published draftPR10 at178be0358:672/672 fatal/leak/no-retry sanitizer tests,672/672 Debug tests,5 guard tests,517 instrumented commands; independent review confirms actual three-dot PR diff/merge preserves T08/T10 with no actionable source findings. Parent draftPR9 isolates the residual native browser queue name and tests actual client/server lifecycle; final committed-source build is pending atd40cf8227, second review is clear. All PRs registered with T3; no heavy workflow dispatch/enablement.
+
+## 2026-10-12 — sanitizer proof merged; offline parser review
+
+Merged PR10 at6dd64ada2 after independent review and all enabled CI green; library/EventSub instrumentation and fatal/leak/no-retry proof are implemented, heavy sanitizer workflow is manual-only/undispatched. T09a offline model draftPR11 reports677/677 tests and six parser/projection suites; reviewer found two display fallbacks needing correction. Isolated CursorT09ar fixes target/duration notices and empty detail fallback; original evidence remains intact. Parent PR9 IPC lifecycle passed672/672 Debug tests with no failed attempts and fresh independent review; combined main+IPC sanitizer run is pending before merge. No production YouTube auth/network/UI activation, releases/signing or paused CI changes.

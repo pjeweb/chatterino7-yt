@@ -39,7 +39,7 @@ is the previous pass’s historical record, superseded by this ownership notice.
 
 | Task | Provider | Status / checkout                                                      |
 | ---- | -------- | ---------------------------------------------------------------------- |
-| T06  | Codex    | active, `c7yt-night/T06`; local sanitizer proof + manual-only workflow |
+| T06  | Codex    | merged PR #10;672 fatal ASan/UBSan tests +672 Debug tests passed       |
 | T10  | Codex    | merged PR #6; translation design only                                  |
 | T08  | Cursor   | merged PR #7, including isolated packaging corrections T08r            |
 | T09a | Codex    | active after T08 validation, `c7yt-night/T09a`; offline models/parsers |

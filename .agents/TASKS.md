@@ -11,7 +11,7 @@ Only the supervisor edits this file. Task specs are the contract for workers.
 | T03 | Risky-feature review and safe defaults                  | merged | yes    | T00             | PR #5                  |
 | T04 | YouTube design doc (official API)                       | merged | no     | T00             | PR #4                  |
 | T05 | Docs pass: fork README, docs index, diagrams            | merged | no     | T01–T04         |                        |
-| T06 | Sanitizer test job (ASan/UBSan)                         | active | yes    | T01             | night/T06-sanitizers   |
+| T06 | Sanitizer test job (ASan/UBSan)                         | merged | yes    | T01             | PR #10                 |
 | T07 | Release workflow: provenance, SBOM, checksums           | todo   | no     | T01             |                        |
 | T08 | Coexistence: app name, settings dir, app ID             | merged | yes    | T03             | PR #7                  |
 | T09 | YouTube implementation (slices from T04)                | active | yes    | T04             |                        |
