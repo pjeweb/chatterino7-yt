@@ -119,7 +119,7 @@ controller validation is withheld. No authentication/global configuration
 changes or alternate credentials attempted. T12 is running without new local
 commits; T07 remains queued for natural 04:51 renewal. No new dispatch needed.
 
-## 2026-10-12 03:07 — T12 reviewed; isolated embed correction
+## 2026-10-12 03:06 — T12 reviewed; isolated embed correction
 
 Published committed T12 `75fcc1386` as draft PR #13; scope has no gitlinks or
 unrelated pins. Clean merge-tree, format/whitespace, network gate and 17 Python
