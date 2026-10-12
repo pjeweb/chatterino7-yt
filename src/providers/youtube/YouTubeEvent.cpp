@@ -42,6 +42,38 @@ std::optional<quint64> number(const QJsonValue &value)
     }
     return std::nullopt;
 }
+
+QString banFallback(const Event &e)
+{
+    // Never the event author: bans identify the moderated target only.
+    const QString target = !e.targetDisplayName.isEmpty() ? e.targetDisplayName
+                                                          : e.targetChannelId;
+    if (e.banType == "temporary")
+    {
+        if (!target.isEmpty() && e.banDurationSeconds)
+        {
+            return target + QStringLiteral(" timed out for ") +
+                   QString::number(*e.banDurationSeconds) +
+                   QStringLiteral(" seconds");
+        }
+        if (!target.isEmpty())
+        {
+            return target + QStringLiteral(" timed out");
+        }
+        if (e.banDurationSeconds)
+        {
+            return QStringLiteral("User timed out for ") +
+                   QString::number(*e.banDurationSeconds) +
+                   QStringLiteral(" seconds");
+        }
+        return QStringLiteral("User timed out");
+    }
+    if (!target.isEmpty())
+    {
+        return target + QStringLiteral(" banned");
+    }
+    return QStringLiteral("User banned");
+}
 }  // namespace
 
 Event parseEvent(const QJsonValue &resource)
@@ -73,9 +105,14 @@ Event parseEvent(const QJsonValue &resource)
         e.kind = EventKind::Text;
         const auto text =
             s.value("textMessageDetails").toObject().value("messageText");
+        // Empty detail text must not wipe a usable displayMessage fallback.
         if (text.isString())
         {
-            e.text = text.toString();
+            const auto detail = text.toString();
+            if (!detail.isEmpty())
+            {
+                e.text = detail;
+            }
         }
         fallback = QStringLiteral("Unavailable YouTube message");
     }
@@ -97,8 +134,8 @@ Event parseEvent(const QJsonValue &resource)
         {
             e.banDurationSeconds = number(details.value("banDurationSeconds"));
         }
-        fallback = e.banType == "temporary" ? QStringLiteral("User timed out")
-                                            : QStringLiteral("User banned");
+        // Nonempty displayMessage is kept; fallback fills only when empty.
+        fallback = banFallback(e);
     }
     else if (type == "superChatEvent" || type == "superStickerEvent")
     {
