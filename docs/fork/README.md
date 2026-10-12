@@ -6,6 +6,7 @@
 | [NETWORK.md](NETWORK.md)         | Host inventory, defaults, CI host gate                                 |
 | [FEATURES.md](FEATURES.md)       | Risky-feature decisions and evidence                                   |
 | [CI.md](CI.md)                   | Workflow triggers, pause status, owner guards                          |
+| [RELEASES.md](RELEASES.md)       | **Not run yet** — verify downloads; draft-release workflow limits      |
 | [youtube.md](youtube.md)         | **Design only** — official YouTube Data API v3 live chat               |
 | [translation.md](translation.md) | **Design only** — on-device Bergamot first, optional BYO-key providers |
 

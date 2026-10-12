@@ -5,7 +5,7 @@ Fork of [chatterino7](https://github.com/SevenTV/chatterino7) with three goals:
 1. **Privacy first.** No analytics. Third-party hosts are required for chat or
    opt-in — see [`NETWORK.md`](NETWORK.md) and [`FEATURES.md`](FEATURES.md).
 2. **Verifiable builds.** Public CI from tagged commits, provenance + SBOM
-   _(release pipeline not landed yet)_.
+   _(manual draft-release workflow, not yet run; see [`RELEASES.md`](RELEASES.md))_.
 3. **YouTube live chat** via official Data API v3 only _(design in
    [`youtube.md`](youtube.md); no provider code yet)_.
 

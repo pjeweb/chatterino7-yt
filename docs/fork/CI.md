@@ -20,6 +20,7 @@ flowchart LR
     scorecard[Scorecard]
     sync[Upstream sync]
     sanitizers[Sanitizers: manual only]
+    release[Draft release: manual only]
     paused[Paused: Build, Ubuntu/Arch/macOS/Windows tests,<br/>FreeBSD build, clang-tidy]
     publish[Paused and owner-guarded:<br/>installers, PR comments, WinGet]
     push & pr & queue --> fmt
@@ -30,7 +31,7 @@ flowchart LR
     push --> scorecard
     cron -->|weekly| codeql & scorecard
     cron -->|daily| sync
-    manual --> scorecard & sync & sanitizers
+    manual --> scorecard & sync & sanitizers & release
     push & pr & queue & manual -.->|configured triggers vary| paused
     manual -.->|installers only| publish
     events([workflow_run / release]) -.-> publish
@@ -55,6 +56,7 @@ branch/event filters live in each workflow, including the paused ones.
 | Scorecard                                   | Supply-chain findings uploaded to code scanning and published to OpenSSF                 |
 | Upstream sync                               | Merge PR, or an issue listing conflicts; no automatic merge                              |
 | Sanitizers (manual only)                    | Local-container ASan/UBSan tests, instrumented implementation libraries, diagnostic logs |
+| Draft release (manual only)                 | Build run's artifacts as a draft with checksums, SBOMs, attestations; see `RELEASES.md`  |
 
 zizmor's SARIF mode reports findings without failing the job; blocking findings
 requires code-scanning merge protection. The upstream findings remain visible.
